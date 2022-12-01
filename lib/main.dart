@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:quick_letter_1/pages/ExamplePage.dart';
 import 'package:quick_letter_1/pages/LandingPage.dart';
+import 'package:quick_letter_1/pages/LupaPassword.dart';
 
 void main() => runApp(const App());
 

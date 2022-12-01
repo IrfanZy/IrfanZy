@@ -64,6 +64,10 @@ flutter:
      - assets/gambar.svg
      - assets/pesan.svg
      - assets/telepon.svg
+     - images/circle.png
+     - images/circleatas.png
+     - images/circlebawahkanan.png
+     - images/circleataskiri.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

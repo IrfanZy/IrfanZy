@@ -20,7 +20,7 @@ class LandingFragment extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
 
     return Container(
-      color: const Color(0xffFEFFF1),
+      color: Color.fromARGB(255, 255, 255, 255),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
