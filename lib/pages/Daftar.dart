@@ -48,7 +48,7 @@ class _DaftarPageState extends State<DaftarPage> {
                         ],
                       ),
                       const SizedBox(
-                        height: 15,
+                        height: 18,
                       ),
                       const TextField(
                         decoration: InputDecoration(
@@ -78,7 +78,7 @@ class _DaftarPageState extends State<DaftarPage> {
                             hintStyle: TextStyle(fontWeight: FontWeight.w500)),
                       ),
                       const SizedBox(
-                        height: 15,
+                        height: 18,
                       ),
                       const TextField(
                         decoration: InputDecoration(
@@ -108,7 +108,7 @@ class _DaftarPageState extends State<DaftarPage> {
                             hintStyle: TextStyle(fontWeight: FontWeight.w500)),
                       ),
                       const SizedBox(
-                        height: 15,
+                        height: 18,
                       ),
                       const TextField(
                         decoration: InputDecoration(
@@ -138,7 +138,7 @@ class _DaftarPageState extends State<DaftarPage> {
                             hintStyle: TextStyle(fontWeight: FontWeight.w500)),
                       ),
                       const SizedBox(
-                        height: 15,
+                        height: 18,
                       ),
                       const TextField(
                         decoration: InputDecoration(

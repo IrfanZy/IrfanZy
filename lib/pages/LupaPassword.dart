@@ -49,26 +49,29 @@ class _LupaPaswordState extends State<LupaPasword> {
                   ),
                   const TextField(
                     decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color(0xff3FBDF1),
-                            width: 3,
-                          ),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(30.0),
-                          ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0xff3FBDF1),
+                          width: 3,
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color(0xff3FBDF1),
-                            width: 3,
-                          ),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(30.0),
-                          ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(30.0),
                         ),
-                        hintText: 'Masukan Email Anda',
-                        hintStyle: TextStyle(fontWeight: FontWeight.w500)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0xff3FBDF1),
+                          width: 3,
+                        ),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(30.0),
+                        ),
+                      ),
+                      hintText: 'example@gmail.com',
+                      hintStyle: TextStyle(
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ),
                   const SizedBox(
                     height: 20,

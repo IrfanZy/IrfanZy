@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:quick_letter_1/fragments/LandingFragment.dart';
-import 'package:quick_letter_1/pages/ExamplePage.dart';
+import 'package:quick_letter_1/pages/FirstPage.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});

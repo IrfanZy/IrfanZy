@@ -1,7 +1,8 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-import 'package:quick_letter_1/pages/ExamplePage.dart';
+import 'package:quick_letter_1/pages/FirstPage.dart';
+import 'package:quick_letter_1/pages/Home.dart';
 import 'package:quick_letter_1/pages/LandingPage.dart';
 import 'package:quick_letter_1/pages/LupaPassword.dart';
 
