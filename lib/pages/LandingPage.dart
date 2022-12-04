@@ -86,7 +86,7 @@ class _LandingPageState extends State<LandingPage> {
                   } else {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const EaxmplePage(),
+                        builder: (context) => const FirstPage(),
                       ),
                     );
                   }

@@ -1,8 +1,9 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:lottie/lottie.dart';
+import 'package:quick_letter_1/fragments/HomeBerandaFragment.dart';
+import 'package:quick_letter_1/fragments/HomeProfileFragment.dart';
 
 class Beranda extends StatefulWidget {
   const Beranda({Key? key}) : super(key: key);
@@ -12,42 +13,77 @@ class Beranda extends StatefulWidget {
 }
 
 class _BerandaState extends State<Beranda> {
+  int indexTab = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: Container(
-        margin: EdgeInsets.fromLTRB(50, 15, 50, 15),
-        height: 80,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(.2),
-              blurRadius: 30,
-              offset: Offset(1, 10),
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 100),
+              transitionBuilder: (Widget child, Animation<double> animation) {
+                return FadeTransition(opacity: animation, child: child);
+              },
+              child: SizedBox(
+                width: double.infinity,
+                height: double.infinity,
+                key: ValueKey<int>(indexTab),
+                child: (() {
+                  switch (indexTab) {
+                    case 0:
+                      return const HomeBerandaFragment();
+
+                    case 1:
+                      return const HomeProfileFragment();
+
+                    default:
+                      return Container();
+                  }
+                })(),
+              ),
             ),
-          ],
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: GNav(
-          color: Color(0xff3FBDF1),
-          activeColor: Color(0xff3FBDF1),
-          haptic: true,
-          tabBackgroundColor: Color(0xff3FBDF1).withOpacity(.2),
-          tabBorderRadius: 30,
-          gap: 15,
-          iconSize: 30,
-          tabs: const [
-            GButton(
-              icon: Icons.home,
-              text: 'Beranda',
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              margin: const EdgeInsets.fromLTRB(50, 15, 50, 15),
+              height: 80,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(.2),
+                    blurRadius: 30,
+                    offset: const Offset(1, 10),
+                  ),
+                ],
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: GNav(
+                onTabChange: (value) => setState(() => indexTab = value),
+                color: const Color(0xff3FBDF1),
+                activeColor: const Color(0xff3FBDF1),
+                haptic: true,
+                tabBackgroundColor: const Color(0xff3FBDF1).withOpacity(.2),
+                tabBorderRadius: 30,
+                gap: 15,
+                iconSize: 30,
+                tabs: const [
+                  GButton(
+                    icon: Icons.home,
+                    text: 'Beranda',
+                  ),
+                  GButton(
+                    icon: Icons.person,
+                    text: 'Profile',
+                  ),
+                ],
+              ),
             ),
-            GButton(
-              icon: Icons.person,
-              text: 'Profile',
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
