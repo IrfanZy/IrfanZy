@@ -1,16 +1,12 @@
-// ignore_for_file: file_names
-
 import 'package:flutter/material.dart';
 
-class TextFieldCustom extends StatelessWidget {
-  final TextEditingController controller;
+class Textfieldcustomprofile extends StatelessWidget {
   final String hint;
   final IconData? icon;
   final bool filled;
 
-  const TextFieldCustom({
+  const Textfieldcustomprofile({
     super.key,
-    required this.controller,
     required this.hint,
     this.icon,
     this.filled = false,
@@ -19,7 +15,6 @@ class TextFieldCustom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: controller,
       decoration: InputDecoration(
           filled: filled,
           fillColor: filled ? Colors.white : Colors.transparent,
@@ -29,7 +24,7 @@ class TextFieldCustom extends StatelessWidget {
               width: 3,
             ),
             borderRadius: BorderRadius.all(
-              Radius.circular(15.0),
+              Radius.circular(10.0),
             ),
           ),
           focusedBorder: const OutlineInputBorder(
@@ -38,12 +33,8 @@ class TextFieldCustom extends StatelessWidget {
               width: 3,
             ),
             borderRadius: BorderRadius.all(
-              Radius.circular(15.0),
+              Radius.circular(10.0),
             ),
-          ),
-          prefixIcon: Icon(
-            icon,
-            size: 30,
           ),
           hintText: hint,
           hintStyle: const TextStyle(fontWeight: FontWeight.w500)),

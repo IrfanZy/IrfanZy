@@ -14,7 +14,7 @@ class _HomeBerandaFragmentState extends State<HomeBerandaFragment> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 20),
+      padding: const EdgeInsets.symmetric(vertical: 100, horizontal: 20),
       child: Column(
         children: [
           SizedBox(
@@ -28,7 +28,7 @@ class _HomeBerandaFragmentState extends State<HomeBerandaFragment> {
                 );
               },
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(50.0),
                 child: Row(
                   children: const [
                     Icon(

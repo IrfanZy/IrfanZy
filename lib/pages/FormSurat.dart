@@ -90,6 +90,22 @@ class _FormSuratState extends State<FormSurat> {
                     const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
                 child: Column(
                   children: [
+                    const Text(
+                      'Form Cetak Surat Pengantar',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
+                      ),
+                    ),
+                    SizedBox(height: 13),
+                    const Text(
+                      'Isi form dibawah ini untuk mencetak surat pengantar RT',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 15,
+                      ),
+                    ),
+                    SizedBox(height: 10),
                     TextFieldCustom(
                       filled: true,
                       controller: controllers['nama_lengkap']!,
@@ -161,8 +177,16 @@ class _FormSuratState extends State<FormSurat> {
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xff3FBDF1),
+                        shape: const StadiumBorder(),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 20.0,
+                          horizontal: 20.0,
+                        ),
+                      ),
                       onPressed: generatePdf,
-                      child: const Text("Cetak Surat Keterangan"),
+                      child: const Text("Cetak Surat Pengantar"),
                     )
                   ],
                 ),
