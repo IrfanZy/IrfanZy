@@ -97,7 +97,7 @@ class _FormSuratState extends State<FormSurat> {
                         fontSize: 30,
                       ),
                     ),
-                    SizedBox(height: 13),
+                    const SizedBox(height: 13),
                     const Text(
                       'Isi form dibawah ini untuk mencetak surat pengantar RT',
                       style: TextStyle(
@@ -105,7 +105,7 @@ class _FormSuratState extends State<FormSurat> {
                         fontSize: 15,
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     TextFieldCustom(
                       filled: true,
                       controller: controllers['nama_lengkap']!,

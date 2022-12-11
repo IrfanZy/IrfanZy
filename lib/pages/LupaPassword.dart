@@ -1,7 +1,6 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import 'package:quick_letter_1/pages/Daftar.dart';
 
 class LupaPasword extends StatefulWidget {

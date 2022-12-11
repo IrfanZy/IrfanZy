@@ -1,12 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-import 'package:quick_letter_1/pages/Daftar.dart';
 import 'package:quick_letter_1/pages/LandingPage.dart';
-import 'package:quick_letter_1/pages/LoginPengurus.dart';
-import 'package:quick_letter_1/pages/LupaPassword.dart';
-import 'package:quick_letter_1/pages/ProfilePage.dart';
-import 'package:quick_letter_1/pages/UbahPassword.dart';
 
 void main() => runApp(const App());
 

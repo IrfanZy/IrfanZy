@@ -1,6 +1,6 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:quick_letter_1/widgets/TextFieldCustomProfile.dart';
 
 class ChangePassword extends StatefulWidget {
@@ -71,7 +71,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                         const Textfieldcustomprofile(
                           hint: 'Konfirmasi Password',
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Card(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),

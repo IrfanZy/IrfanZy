@@ -42,8 +42,8 @@ class _FirstPageState extends State<FirstPage> {
                     child: Center(
                       child: Column(
                         children: [
-                          Lottie.network(
-                            'https://assets2.lottiefiles.com/packages/lf20_dehufm3f.json',
+                          Lottie.asset(
+                            'animations/lottie_newletters.json',
                           ),
                           const SizedBox(height: 20),
                           Column(
