@@ -38,8 +38,8 @@ class _KepengurusanState extends State<Kepengurusan> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      Lottie.network(
-                        'https://assets2.lottiefiles.com/packages/lf20_SftL8OC48W.json',
+                      Lottie.asset(
+                        'animations/lottie_Pin.json',
                         width: 300,
                       ),
                       Container(
@@ -91,7 +91,7 @@ class _KepengurusanState extends State<Kepengurusan> {
                                       width: 3,
                                     ),
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(30.0),
+                                      Radius.circular(15.0),
                                     ),
                                   ),
                                   focusedBorder: OutlineInputBorder(
@@ -100,7 +100,7 @@ class _KepengurusanState extends State<Kepengurusan> {
                                       width: 3,
                                     ),
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(30.0),
+                                      Radius.circular(15.0),
                                     ),
                                   ),
                                   prefixIcon: Icon(
@@ -116,12 +116,13 @@ class _KepengurusanState extends State<Kepengurusan> {
                             ),
                             Card(
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
+                                borderRadius: BorderRadius.circular(20),
                               ),
                               color: const Color(0xff3FBDF1),
                               elevation: 5,
                               child: SizedBox(
                                 height: 50,
+                                width: 250,
                                 child: InkWell(
                                   splashColor: Colors.white,
                                   onTap: () {},

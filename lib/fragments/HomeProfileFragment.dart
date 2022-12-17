@@ -33,14 +33,14 @@ class _HomeProfileFragmentState extends State<HomeProfileFragment> {
               ),
             ),
             SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(45, 50, 45, 150),
+              padding: const EdgeInsets.fromLTRB(25, 25, 25, 110),
               child: Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        'Profilmu',
+                        'Profilemu',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 30),
                       ),
@@ -74,10 +74,16 @@ class _HomeProfileFragmentState extends State<HomeProfileFragment> {
                             width: 110,
                             height: 110,
                             decoration: const BoxDecoration(
-                                color: Colors.red,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(1000),
-                                )),
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(1000),
+                              ),
+                            ),
+                            child: const Icon(
+                              Icons.person,
+                              color: Colors.white,
+                              size: 70,
+                            ),
                           ),
                         ),
                         Align(
@@ -105,16 +111,38 @@ class _HomeProfileFragmentState extends State<HomeProfileFragment> {
                   ),
                   const Text(
                     'Ubah Foto Profile',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 20),
+                  Row(
+                    children: const [
+                      Text(
+                        'Nama',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
                   Textfieldcustomprofile(
                     filled: true,
                     hint: 'Nama Lengkap',
                     readOnly: readOnly,
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 15,
+                  ),
+                  Row(
+                    children: const [
+                      Text(
+                        'No.KK',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
                   ),
                   Textfieldcustomprofile(
                     filled: true,
@@ -122,7 +150,19 @@ class _HomeProfileFragmentState extends State<HomeProfileFragment> {
                     readOnly: readOnly,
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 15,
+                  ),
+                  Row(
+                    children: const [
+                      Text(
+                        'NIK',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
                   ),
                   Textfieldcustomprofile(
                     filled: true,
@@ -130,7 +170,19 @@ class _HomeProfileFragmentState extends State<HomeProfileFragment> {
                     readOnly: readOnly,
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 15,
+                  ),
+                  Row(
+                    children: const [
+                      Text(
+                        'No. Telepon',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
                   ),
                   Textfieldcustomprofile(
                     filled: true,
@@ -138,7 +190,19 @@ class _HomeProfileFragmentState extends State<HomeProfileFragment> {
                     readOnly: readOnly,
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 15,
+                  ),
+                  Row(
+                    children: const [
+                      Text(
+                        'Jenis Kelamin',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
                   ),
                   Textfieldcustomprofile(
                     filled: true,
@@ -146,7 +210,19 @@ class _HomeProfileFragmentState extends State<HomeProfileFragment> {
                     readOnly: readOnly,
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 15,
+                  ),
+                  Row(
+                    children: const [
+                      Text(
+                        'Alamat',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
                   ),
                   Textfieldcustomprofile(
                     filled: true,
@@ -154,7 +230,19 @@ class _HomeProfileFragmentState extends State<HomeProfileFragment> {
                     readOnly: readOnly,
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 15,
+                  ),
+                  Row(
+                    children: const [
+                      Text(
+                        'Email',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
                   ),
                   Textfieldcustomprofile(
                     filled: true,
@@ -162,7 +250,7 @@ class _HomeProfileFragmentState extends State<HomeProfileFragment> {
                     readOnly: readOnly,
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 15,
                   ),
                   Card(
                     shape: RoundedRectangleBorder(

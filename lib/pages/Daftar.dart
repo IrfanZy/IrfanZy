@@ -29,7 +29,7 @@ class _DaftarPageState extends State<DaftarPage> {
               Column(
                 children: [
                   Container(
-                    padding: const EdgeInsets.fromLTRB(13, 50, 13, 55),
+                    padding: const EdgeInsets.fromLTRB(20, 50, 20, 40),
                     child: Column(
                       children: [
                         Column(
@@ -44,6 +44,7 @@ class _DaftarPageState extends State<DaftarPage> {
                             SizedBox(height: 10),
                             Text(
                               "Silahkan isi form dibawah ini untuk mendaftar akun anda.",
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w500,
@@ -62,7 +63,7 @@ class _DaftarPageState extends State<DaftarPage> {
                                   width: 3,
                                 ),
                                 borderRadius: BorderRadius.all(
-                                  Radius.circular(30.0),
+                                  Radius.circular(15.0),
                                 ),
                               ),
                               focusedBorder: OutlineInputBorder(
@@ -71,7 +72,7 @@ class _DaftarPageState extends State<DaftarPage> {
                                   width: 3,
                                 ),
                                 borderRadius: BorderRadius.all(
-                                  Radius.circular(30.0),
+                                  Radius.circular(15.0),
                                 ),
                               ),
                               prefixIcon: Icon(
@@ -93,7 +94,7 @@ class _DaftarPageState extends State<DaftarPage> {
                                   width: 3,
                                 ),
                                 borderRadius: BorderRadius.all(
-                                  Radius.circular(30.0),
+                                  Radius.circular(15.0),
                                 ),
                               ),
                               focusedBorder: OutlineInputBorder(
@@ -102,7 +103,7 @@ class _DaftarPageState extends State<DaftarPage> {
                                   width: 3,
                                 ),
                                 borderRadius: BorderRadius.all(
-                                  Radius.circular(30.0),
+                                  Radius.circular(15.0),
                                 ),
                               ),
                               prefixIcon: Icon(
@@ -124,7 +125,7 @@ class _DaftarPageState extends State<DaftarPage> {
                                   width: 3,
                                 ),
                                 borderRadius: BorderRadius.all(
-                                  Radius.circular(30.0),
+                                  Radius.circular(15.0),
                                 ),
                               ),
                               focusedBorder: OutlineInputBorder(
@@ -133,7 +134,7 @@ class _DaftarPageState extends State<DaftarPage> {
                                   width: 3,
                                 ),
                                 borderRadius: BorderRadius.all(
-                                  Radius.circular(30.0),
+                                  Radius.circular(15.0),
                                 ),
                               ),
                               prefixIcon: Icon(
@@ -145,7 +146,7 @@ class _DaftarPageState extends State<DaftarPage> {
                                   TextStyle(fontWeight: FontWeight.w500)),
                         ),
                         const SizedBox(
-                          height: 18,
+                          height: 17,
                         ),
                         const TextField(
                           decoration: InputDecoration(
@@ -155,7 +156,7 @@ class _DaftarPageState extends State<DaftarPage> {
                                   width: 3,
                                 ),
                                 borderRadius: BorderRadius.all(
-                                  Radius.circular(30.0),
+                                  Radius.circular(15.0),
                                 ),
                               ),
                               focusedBorder: OutlineInputBorder(
@@ -164,7 +165,7 @@ class _DaftarPageState extends State<DaftarPage> {
                                   width: 3,
                                 ),
                                 borderRadius: BorderRadius.all(
-                                  Radius.circular(30.0),
+                                  Radius.circular(15.0),
                                 ),
                               ),
                               prefixIcon: Icon(
@@ -176,7 +177,7 @@ class _DaftarPageState extends State<DaftarPage> {
                                   TextStyle(fontWeight: FontWeight.w500)),
                         ),
                         const SizedBox(
-                          height: 15,
+                          height: 20,
                         ),
                         const TextField(
                           decoration: InputDecoration(
@@ -186,7 +187,7 @@ class _DaftarPageState extends State<DaftarPage> {
                                   width: 3,
                                 ),
                                 borderRadius: BorderRadius.all(
-                                  Radius.circular(30.0),
+                                  Radius.circular(15.0),
                                 ),
                               ),
                               focusedBorder: OutlineInputBorder(
@@ -195,7 +196,7 @@ class _DaftarPageState extends State<DaftarPage> {
                                   width: 3,
                                 ),
                                 borderRadius: BorderRadius.all(
-                                  Radius.circular(30.0),
+                                  Radius.circular(15.0),
                                 ),
                               ),
                               prefixIcon: Icon(
@@ -207,7 +208,7 @@ class _DaftarPageState extends State<DaftarPage> {
                                   TextStyle(fontWeight: FontWeight.w500)),
                         ),
                         const SizedBox(
-                          height: 15,
+                          height: 20,
                         ),
                         Card(
                           shape: RoundedRectangleBorder(

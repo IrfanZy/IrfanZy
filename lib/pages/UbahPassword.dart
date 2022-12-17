@@ -40,7 +40,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.fromLTRB(15, 30, 13, 55),
+                    padding: const EdgeInsets.fromLTRB(15, 30, 15, 55),
                     child: Column(
                       children: [
                         const Text(
@@ -50,7 +50,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 15),
                         const Text(
                           "Kata sandi yang baru harus berbeda dengan kata sandi yang sebelumnya.",
                           style: TextStyle(

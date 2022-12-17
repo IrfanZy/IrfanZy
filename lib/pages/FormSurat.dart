@@ -87,7 +87,7 @@ class _FormSuratState extends State<FormSurat> {
               },
               child: SingleChildScrollView(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+                    const EdgeInsets.symmetric(vertical: 70, horizontal: 20),
                 child: Column(
                   children: [
                     const Text(

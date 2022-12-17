@@ -93,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                                       width: 3,
                                     ),
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(30.0),
+                                      Radius.circular(20.0),
                                     ),
                                   ),
                                   focusedBorder: OutlineInputBorder(
@@ -102,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
                                       width: 3,
                                     ),
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(30.0),
+                                      Radius.circular(20.0),
                                     ),
                                   ),
                                   prefixIcon: Icon(
@@ -125,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                                       width: 3,
                                     ),
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(30.0),
+                                      Radius.circular(20.0),
                                     ),
                                   ),
                                   focusedBorder: OutlineInputBorder(
@@ -134,7 +134,7 @@ class _LoginPageState extends State<LoginPage> {
                                       width: 3,
                                     ),
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(30.0),
+                                      Radius.circular(20.0),
                                     ),
                                   ),
                                   prefixIcon: Icon(
@@ -160,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             Card(
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
+                                borderRadius: BorderRadius.circular(15),
                               ),
                               color: const Color(0xff3FBDF1),
                               elevation: 5,
