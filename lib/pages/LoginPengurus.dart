@@ -2,7 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:quick_letter_1/fragments/AdminFragment.dart';
+import 'package:quick_letter_1/fragments/HomeBerandaFragment.dart';
+import 'package:quick_letter_1/fragments/HomeProfileFragment.dart';
+import 'package:quick_letter_1/pages/Home.dart';
 import 'package:quick_letter_1/pages/Login.dart';
+import 'package:quick_letter_1/providers/features.dart';
 
 class Kepengurusan extends StatefulWidget {
   const Kepengurusan({Key? key}) : super(key: key);
@@ -12,6 +17,8 @@ class Kepengurusan extends StatefulWidget {
 }
 
 class _KepengurusanState extends State<Kepengurusan> {
+  TextEditingController controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,9 +89,10 @@ class _KepengurusanState extends State<Kepengurusan> {
                                   fontSize: 15, fontWeight: FontWeight.w500),
                             ),
                             const SizedBox(height: 20),
-                            const TextField(
+                            TextFormField(
+                              controller: controller,
                               obscureText: true,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                   border: OutlineInputBorder(
                                     borderSide: BorderSide(
                                       color: Color(0xff3FBDF1),
@@ -125,7 +133,27 @@ class _KepengurusanState extends State<Kepengurusan> {
                                 width: 250,
                                 child: InkWell(
                                   splashColor: Colors.white,
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => Beranda(
+                                          role: controller.text == "pengurus"
+                                              ? "pengurus"
+                                              : "admin",
+                                          fragments: [
+                                            HomeBerandaFragment(
+                                              illustrationPath:
+                                                  "images/ManagedataWarga.png",
+                                              features: Features.Pengurus,
+                                            ),
+                                            controller.text == "pengurus"
+                                                ? const HomeProfileFragment()
+                                                : const KelolaAdmin(),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
                                   child: const Center(
                                     child: Text(
                                       "Masuk",

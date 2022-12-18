@@ -1,10 +1,13 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:quick_letter_1/fragments/HomeBerandaFragment.dart';
+import 'package:quick_letter_1/fragments/HomeProfileFragment.dart';
 import 'package:quick_letter_1/pages/Daftar.dart';
 import 'package:quick_letter_1/pages/Home.dart';
 import 'package:quick_letter_1/pages/LoginPengurus.dart';
 import 'package:quick_letter_1/pages/LupaPassword.dart';
+import 'package:quick_letter_1/providers/features.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -169,10 +172,20 @@ class _LoginPageState extends State<LoginPage> {
                                 child: InkWell(
                                   splashColor: Colors.white,
                                   onTap: () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const Beranda()));
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                      builder: (context) => Beranda(
+                                        role: "warga",
+                                        fragments: [
+                                          HomeBerandaFragment(
+                                            illustrationPath:
+                                                "images/FastPrint.png",
+                                            features: Features.Warga,
+                                          ),
+                                          const HomeProfileFragment()
+                                        ],
+                                      ),
+                                    ));
                                   },
                                   child: const Center(
                                     child: Text(

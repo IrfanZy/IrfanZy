@@ -2,11 +2,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:quick_letter_1/fragments/HomeBerandaFragment.dart';
-import 'package:quick_letter_1/fragments/HomeProfileFragment.dart';
 
 class Beranda extends StatefulWidget {
-  const Beranda({Key? key}) : super(key: key);
+  final String role;
+  final List<Widget> fragments;
+
+  const Beranda({
+    Key? key,
+    required this.role,
+    required this.fragments,
+  }) : super(key: key);
 
   @override
   State<Beranda> createState() => _BerandaState();
@@ -33,10 +38,10 @@ class _BerandaState extends State<Beranda> {
                 child: (() {
                   switch (indexTab) {
                     case 0:
-                      return const HomeBerandaFragment();
+                      return widget.fragments[0];
 
                     case 1:
-                      return const HomeProfileFragment();
+                      return widget.fragments[1];
 
                     default:
                       return Container();
@@ -70,14 +75,14 @@ class _BerandaState extends State<Beranda> {
                 tabBorderRadius: 30,
                 gap: 15,
                 iconSize: 30,
-                tabs: const [
-                  GButton(
+                tabs: [
+                  const GButton(
                     icon: Icons.home,
                     text: 'Beranda',
                   ),
                   GButton(
                     icon: Icons.person,
-                    text: 'Profile',
+                    text: widget.role == "admin" ? "Admin" : "Profile",
                   ),
                 ],
               ),

@@ -17,19 +17,19 @@ class _LandingPageState extends State<LandingPage> {
 
   final List<Widget> _pages = [
     const LandingFragment(
-        title: "Friendly UI/UX",
+        title: "Tampilan Sederhana",
         description:
-            "Tampilan UI yang friendly sehingga memudahkan pengguna dalam menggunakan aplikasi ini",
+            "Tampilan aplikasi yang sederhana sehingga dapat memudahkan pengguna",
         image: "assets/gambar.svg"),
     const LandingFragment(
-        title: "Easy to Use",
+        title: "Kelola Data Warga",
         description:
-            "Mudah digunakan dan mudah dipahami sehingga tidak sulit saat penggunaannya",
+            "Kepengurusan RT dapat dengan mudah mengelola data warga dengan menggunakan aplikasi ini",
         image: "assets/pesan.svg"),
     const LandingFragment(
         title: "Fast Print",
         description:
-            "Sistem dapat mengisi dan langsung mencetak sesuai dengan pilihan surat yang dipilih oleh user",
+            "Warga dapat mengisi dan langsung mencetak surat keterangan dengan mengisi form yang telah disediakan",
         image: "assets/telepon.svg"),
   ];
 

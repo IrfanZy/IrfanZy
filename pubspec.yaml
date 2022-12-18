@@ -78,6 +78,8 @@ flutter:
     - images/ubahpassword.png
     - animations/lottie_newletters.json
     - animations/lottie_Pin.json
+    - images/ManagedataWarga.png
+    - images/FastPrint.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -41,10 +41,12 @@ class TextFieldCustom extends StatelessWidget {
               Radius.circular(15.0),
             ),
           ),
-          prefixIcon: Icon(
-            icon,
-            size: 30,
-          ),
+          prefixIcon: icon != null
+              ? Icon(
+                  icon,
+                  size: 30,
+                )
+              : null,
           hintText: hint,
           hintStyle: const TextStyle(fontWeight: FontWeight.w500)),
     );
