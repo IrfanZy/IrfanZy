@@ -34,10 +34,10 @@ class ListDataWargaWidget extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      const Expanded(
+                      Expanded(
                         child: Text(
-                          "Dimas Rahmat",
-                          style: TextStyle(
+                          e,
+                          style: const TextStyle(
                             fontWeight: FontWeight.w500,
                           ),
                         ),

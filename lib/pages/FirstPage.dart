@@ -2,8 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
+import 'package:quick_letter_1/models/warga_model.dart';
 import 'package:quick_letter_1/pages/Daftar.dart';
-import 'package:quick_letter_1/pages/login.dart';
+import 'package:quick_letter_1/pages/Login.dart';
+import 'package:quick_letter_1/services/firestore.dart';
 
 class FirstPage extends StatefulWidget {
   const FirstPage({super.key});
@@ -13,6 +16,8 @@ class FirstPage extends StatefulWidget {
 }
 
 class _FirstPageState extends State<FirstPage> {
+  final FirestoreService firestoreService = FirestoreService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,11 +85,20 @@ class _FirstPageState extends State<FirstPage> {
                                         vertical: 18.0),
                                   ),
                                   onPressed: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => const LoginPage(),
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                      builder: (context) => MultiProvider(
+                                        providers: [
+                                          StreamProvider<
+                                              List<WargaModel>>.value(
+                                            value: firestoreService.listWarga(),
+                                            initialData: const [],
+                                            catchError: (context, object) => [],
+                                          ),
+                                        ],
+                                        child: const LoginPage(),
                                       ),
-                                    );
+                                    ));
                                   },
                                   child: const Text(
                                     "Login",

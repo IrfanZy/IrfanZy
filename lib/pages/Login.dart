@@ -1,8 +1,10 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:quick_letter_1/fragments/HomeBerandaFragment.dart';
 import 'package:quick_letter_1/fragments/HomeProfileFragment.dart';
+import 'package:quick_letter_1/models/warga_model.dart';
 import 'package:quick_letter_1/pages/Daftar.dart';
 import 'package:quick_letter_1/pages/Home.dart';
 import 'package:quick_letter_1/pages/LoginPengurus.dart';
@@ -17,8 +19,13 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  TextEditingController nikController = TextEditingController(),
+      passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    List<WargaModel> listWarga = (Provider.of<List<WargaModel>>(context));
+
     return Scaffold(
       body: GestureDetector(
         onTap: () {
@@ -88,8 +95,9 @@ class _LoginPageState extends State<LoginPage> {
                             const SizedBox(
                               height: 25,
                             ),
-                            const TextField(
-                              decoration: InputDecoration(
+                            TextField(
+                              controller: nikController,
+                              decoration: const InputDecoration(
                                   border: OutlineInputBorder(
                                     borderSide: BorderSide(
                                       color: Color(0xff3FBDF1),
@@ -119,9 +127,10 @@ class _LoginPageState extends State<LoginPage> {
                             const SizedBox(
                               height: 25,
                             ),
-                            const TextField(
-                              obscureText: true,
-                              decoration: InputDecoration(
+                            TextField(
+                              controller: passwordController,
+                              obscureText: false,
+                              decoration: const InputDecoration(
                                   border: OutlineInputBorder(
                                     borderSide: BorderSide(
                                       color: Color(0xff3FBDF1),
@@ -172,20 +181,52 @@ class _LoginPageState extends State<LoginPage> {
                                 child: InkWell(
                                   splashColor: Colors.white,
                                   onTap: () {
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                      builder: (context) => Beranda(
-                                        role: "warga",
-                                        fragments: [
-                                          HomeBerandaFragment(
-                                            illustrationPath:
-                                                "images/FastPrint.png",
-                                            features: Features.Warga,
+                                    bool isValid = false;
+
+                                    for (WargaModel wargaModel in listWarga) {
+                                      if (wargaModel.nik ==
+                                              nikController.text &&
+                                          wargaModel.password ==
+                                              passwordController.text) {
+                                        isValid = true;
+                                      }
+                                    }
+
+                                    if (isValid) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                            "Berhasil masuk",
                                           ),
-                                          const HomeProfileFragment()
-                                        ],
-                                      ),
-                                    ));
+                                        ),
+                                      );
+                                      Navigator.of(context).pushAndRemoveUntil(
+                                        MaterialPageRoute(
+                                          builder: (context) => Beranda(
+                                            role: "warga",
+                                            fragments: [
+                                              HomeBerandaFragment(
+                                                illustrationPath:
+                                                    "images/FastPrint.png",
+                                                features: Features.Warga,
+                                              ),
+                                              const HomeProfileFragment()
+                                            ],
+                                          ),
+                                        ),
+                                        (Route<dynamic> route) => false,
+                                      );
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                            "NIK atau Password yang dimasukkan salah",
+                                          ),
+                                        ),
+                                      );
+                                    }
                                   },
                                   child: const Center(
                                     child: Text(

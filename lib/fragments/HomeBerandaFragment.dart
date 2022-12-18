@@ -1,7 +1,8 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import 'package:quick_letter_1/models/FeatureModel.dart';
+import 'package:quick_letter_1/models/feature_model.dart';
+import 'package:quick_letter_1/services/firestore.dart';
 
 class HomeBerandaFragment extends StatefulWidget {
   final String illustrationPath;
@@ -18,6 +19,8 @@ class HomeBerandaFragment extends StatefulWidget {
 }
 
 class _HomeBerandaFragmentState extends State<HomeBerandaFragment> {
+  final FirestoreService firestoreService = FirestoreService();
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

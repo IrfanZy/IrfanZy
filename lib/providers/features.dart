@@ -1,7 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'package:quick_letter_1/models/FeatureModel.dart';
+import 'package:quick_letter_1/models/feature_model.dart';
 import 'package:quick_letter_1/pages/FormSurat.dart';
 import 'package:quick_letter_1/pages/KelolaDataWarga.dart';
 

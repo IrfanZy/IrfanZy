@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1055045397214",
+    "project_id": "quick-letter-in",
+    "storage_bucket": "quick-letter-in.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1055045397214:android:b3a5e35e992aca373fb04f",
+        "android_client_info": {
+          "package_name": "com.example.quick_letter_1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1055045397214-ptnqdjbf5kohs7qaao79rauf5qfg2qu4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJl0v6E9EYr54EiLSjwPxNxB5DAFONX3w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1055045397214-ptnqdjbf5kohs7qaao79rauf5qfg2qu4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

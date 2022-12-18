@@ -1,9 +1,13 @@
-// ignore_for_file: library_private_types_in_public_api
-
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:quick_letter_1/pages/LandingPage.dart';
 
-void main() => runApp(const App());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(const App());
+}
 
 class App extends StatelessWidget {
   const App({super.key});
