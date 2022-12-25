@@ -47,17 +47,37 @@ class _FormSuratState extends State<FormSurat> {
         DateFormat('d MMMM y').format(DateTime.now()),
       );
 
-      var dir = await DownloadsPathProvider.downloadsDirectory;
+      final dir = await DownloadsPathProvider.downloadsDirectory;
+
       if (dir != null) {
-        await FlutterHtmlToPdf.convertFromHtmlContent(
-          resultPdfLetter,
-          dir.path,
-          "Surat Keterangan",
-        ).then((value) =>
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text('Surat Keterangan berhasil di download'),
-            )));
+        try {
+          await FlutterHtmlToPdf.convertFromHtmlContent(
+            resultPdfLetter,
+            dir.path,
+            "Surat-Keterangan-${DateTime.now().microsecondsSinceEpoch.toString()}",
+          ).then(
+            (value) => ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Surat Keterangan berhasil di download'),
+              ),
+            ),
+          );
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Terjadi kesalahan, silahkan coba lagi...'),
+            ),
+          );
+        }
       }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Pembuatan pdf tidak di izinkan',
+          ),
+        ),
+      );
     }
   }
 

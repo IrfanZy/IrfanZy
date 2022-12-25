@@ -1,6 +1,9 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:quick_letter_1/models/warga_model.dart';
+import 'package:quick_letter_1/services/firestore.dart';
 
 class DaftarPage extends StatefulWidget {
   const DaftarPage({Key? key}) : super(key: key);
@@ -10,8 +13,17 @@ class DaftarPage extends StatefulWidget {
 }
 
 class _DaftarPageState extends State<DaftarPage> {
+  final FirestoreService firestoreService = FirestoreService();
+  TextEditingController nameController = TextEditingController(),
+      nikController = TextEditingController(),
+      addressController = TextEditingController(),
+      phoneNumberController = TextEditingController(),
+      passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    List<WargaModel> listWarga = (Provider.of<List<WargaModel>>(context));
+
     return Scaffold(
       body: GestureDetector(
         onTap: () {
@@ -55,8 +67,9 @@ class _DaftarPageState extends State<DaftarPage> {
                         const SizedBox(
                           height: 18,
                         ),
-                        const TextField(
-                          decoration: InputDecoration(
+                        TextField(
+                          controller: nameController,
+                          decoration: const InputDecoration(
                               border: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color(0xff3FBDF1),
@@ -86,8 +99,9 @@ class _DaftarPageState extends State<DaftarPage> {
                         const SizedBox(
                           height: 18,
                         ),
-                        const TextField(
-                          decoration: InputDecoration(
+                        TextField(
+                          controller: nikController,
+                          decoration: const InputDecoration(
                               border: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color(0xff3FBDF1),
@@ -117,8 +131,9 @@ class _DaftarPageState extends State<DaftarPage> {
                         const SizedBox(
                           height: 18,
                         ),
-                        const TextField(
-                          decoration: InputDecoration(
+                        TextField(
+                          controller: addressController,
+                          decoration: const InputDecoration(
                               border: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color(0xff3FBDF1),
@@ -148,8 +163,9 @@ class _DaftarPageState extends State<DaftarPage> {
                         const SizedBox(
                           height: 17,
                         ),
-                        const TextField(
-                          decoration: InputDecoration(
+                        TextField(
+                          controller: phoneNumberController,
+                          decoration: const InputDecoration(
                               border: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color(0xff3FBDF1),
@@ -179,8 +195,9 @@ class _DaftarPageState extends State<DaftarPage> {
                         const SizedBox(
                           height: 20,
                         ),
-                        const TextField(
-                          decoration: InputDecoration(
+                        TextField(
+                          controller: passwordController,
+                          decoration: const InputDecoration(
                               border: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color(0xff3FBDF1),
@@ -220,7 +237,59 @@ class _DaftarPageState extends State<DaftarPage> {
                             height: 60,
                             child: InkWell(
                               splashColor: Colors.white,
-                              onTap: () {},
+                              onTap: () {
+                                if (nameController.text.isNotEmpty &&
+                                    nikController.text.isNotEmpty &&
+                                    addressController.text.isNotEmpty &&
+                                    phoneNumberController.text.isNotEmpty &&
+                                    passwordController.text.isNotEmpty) {
+                                  if (listWarga.any((warga) =>
+                                      nikController.text == warga.nik)) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          "NIK telah terpakai",
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    try {
+                                      firestoreService
+                                          .collection('warga')
+                                          .add(
+                                            WargaModel(
+                                              name: nameController.text,
+                                              nik: nikController.text,
+                                              password: passwordController.text,
+                                              address: addressController.text,
+                                              phoneNumber:
+                                                  phoneNumberController.text,
+                                            ).toJson(),
+                                          )
+                                          .then((value) => {
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  const SnackBar(
+                                                    content: Text(
+                                                      "Pendaftaran berhasil",
+                                                    ),
+                                                  ),
+                                                )
+                                              });
+                                    } catch (e) {
+                                      e.toString();
+                                    }
+                                  }
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                        "Isian ada yang kosong",
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
                               child: const Center(
                                 child: Text(
                                   "Sign Up",

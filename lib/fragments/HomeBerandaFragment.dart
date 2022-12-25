@@ -5,12 +5,14 @@ import 'package:quick_letter_1/models/feature_model.dart';
 import 'package:quick_letter_1/services/firestore.dart';
 
 class HomeBerandaFragment extends StatefulWidget {
-  final String illustrationPath;
+  final String illustrationPath, title, description;
   final List<FeatureModel> features;
 
   const HomeBerandaFragment({
     super.key,
     required this.illustrationPath,
+    required this.title,
+    required this.description,
     required this.features,
   });
 
@@ -33,20 +35,20 @@ class _HomeBerandaFragmentState extends State<HomeBerandaFragment> {
           ),
           const SizedBox(height: 20),
           Column(
-            children: const [
+            children: [
               Text(
-                'Cetak Surat Pengantar',
+                widget.title,
                 textAlign: TextAlign.justify,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Text(
-                'Warga dapat dengan mudah mencetak surat pengantar RT dengan menekan tombol dibawah ini',
+                widget.description,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
                 ),
@@ -69,7 +71,7 @@ class _HomeBerandaFragmentState extends State<HomeBerandaFragment> {
                         );
                       },
                       child: Card(
-                        color: Color(0xff3FBDF1),
+                        color: const Color(0xff3FBDF1),
                         elevation: 5,
                         shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(
@@ -82,13 +84,16 @@ class _HomeBerandaFragmentState extends State<HomeBerandaFragment> {
                             children: [
                               Icon(
                                 feature.icon,
+                                color: Colors.white,
                                 size: 30,
                               ),
                               const SizedBox(width: 20),
                               Text(
                                 feature.title,
                                 style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ],
                           ),

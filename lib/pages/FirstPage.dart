@@ -116,8 +116,19 @@ class _FirstPageState extends State<FirstPage> {
                                   onPressed: () {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
-                                        builder: (context) =>
-                                            const DaftarPage(),
+                                        builder: (context) => MultiProvider(
+                                          providers: [
+                                            StreamProvider<
+                                                List<WargaModel>>.value(
+                                              value:
+                                                  firestoreService.listWarga(),
+                                              initialData: const [],
+                                              catchError: (context, object) =>
+                                                  [],
+                                            ),
+                                          ],
+                                          child: const DaftarPage(),
+                                        ),
                                       ),
                                     );
                                   },

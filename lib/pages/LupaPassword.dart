@@ -1,7 +1,10 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:quick_letter_1/models/warga_model.dart';
 import 'package:quick_letter_1/pages/Daftar.dart';
+import 'package:quick_letter_1/services/firestore.dart';
 
 class LupaPasword extends StatefulWidget {
   const LupaPasword({Key? key}) : super(key: key);
@@ -11,8 +14,12 @@ class LupaPasword extends StatefulWidget {
 }
 
 class _LupaPaswordState extends State<LupaPasword> {
+  final FirestoreService firestoreService = FirestoreService();
+
   @override
   Widget build(BuildContext context) {
+    // List<WargaModel> listWarga = (Provider.of<List<WargaModel>>(context));
+
     return Scaffold(
       body: GestureDetector(
         onTap: () {
@@ -127,8 +134,20 @@ class _LupaPaswordState extends State<LupaPasword> {
                         child: InkWell(
                           splashColor: const Color(0xff3FBDF1),
                           onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const DaftarPage()));
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => MultiProvider(
+                                  providers: [
+                                    StreamProvider<List<WargaModel>>.value(
+                                      value: firestoreService.listWarga(),
+                                      initialData: const [],
+                                      catchError: (context, object) => [],
+                                    ),
+                                  ],
+                                  child: const DaftarPage(),
+                                ),
+                              ),
+                            );
                           },
                           child: const Center(
                             child: Text(

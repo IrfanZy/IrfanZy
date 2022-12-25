@@ -10,6 +10,7 @@ import 'package:quick_letter_1/pages/Home.dart';
 import 'package:quick_letter_1/pages/LoginPengurus.dart';
 import 'package:quick_letter_1/pages/LupaPassword.dart';
 import 'package:quick_letter_1/providers/features.dart';
+import 'package:quick_letter_1/services/firestore.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -19,6 +20,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final FirestoreService firestoreService = FirestoreService();
   TextEditingController nikController = TextEditingController(),
       passwordController = TextEditingController();
 
@@ -209,9 +211,14 @@ class _LoginPageState extends State<LoginPage> {
                                               HomeBerandaFragment(
                                                 illustrationPath:
                                                     "images/FastPrint.png",
+                                                title: 'Cetak Surat Pengantar',
+                                                description:
+                                                    'Warga dapat dengan mudah mencetak surat pengantar RT dengan menekan tombol dibawah ini',
                                                 features: Features.Warga,
                                               ),
-                                              const HomeProfileFragment()
+                                              const HomeProfileFragment(
+                                                role: 'warga',
+                                              )
                                             ],
                                           ),
                                         ),
@@ -255,9 +262,22 @@ class _LoginPageState extends State<LoginPage> {
                                 TextButton(
                                   onPressed: () {
                                     Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const DaftarPage()));
+                                      MaterialPageRoute(
+                                        builder: (context) => MultiProvider(
+                                          providers: [
+                                            StreamProvider<
+                                                List<WargaModel>>.value(
+                                              value:
+                                                  firestoreService.listWarga(),
+                                              initialData: const [],
+                                              catchError: (context, object) =>
+                                                  [],
+                                            ),
+                                          ],
+                                          child: const DaftarPage(),
+                                        ),
+                                      ),
+                                    );
                                   },
                                   child: const Text(
                                     "Daftar",

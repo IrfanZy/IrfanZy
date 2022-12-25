@@ -2,16 +2,28 @@
 
 import 'package:flutter/material.dart';
 import 'package:quick_letter_1/pages/UbahPassword.dart';
+import 'package:quick_letter_1/services/firestore.dart';
 import 'package:quick_letter_1/widgets/TextFieldCustomProfile.dart';
 
 class HomeProfileFragment extends StatefulWidget {
-  const HomeProfileFragment({super.key});
+  final String role;
+
+  const HomeProfileFragment({
+    super.key,
+    required this.role,
+  });
 
   @override
   State<HomeProfileFragment> createState() => _HomeProfileFragmentState();
 }
 
 class _HomeProfileFragmentState extends State<HomeProfileFragment> {
+  final FirestoreService firestoreService = FirestoreService();
+  TextEditingController nameController = TextEditingController(),
+      nikController = TextEditingController(),
+      addressController = TextEditingController(),
+      phoneNumberController = TextEditingController(),
+      passwordController = TextEditingController();
   bool readOnly = true;
 
   @override
@@ -282,23 +294,56 @@ class _HomeProfileFragmentState extends State<HomeProfileFragment> {
                   const SizedBox(
                     height: 10,
                   ),
+                  widget.role != "pengurus"
+                      ? Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          color: const Color(0xff3FBDF1),
+                          elevation: 5,
+                          child: SizedBox(
+                            height: 50,
+                            child: InkWell(
+                              splashColor: Colors.white,
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ChangePassword()));
+                              },
+                              child: const Center(
+                                child: Text(
+                                  "Ubah Password",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                  const SizedBox(
+                    height: 15,
+                  ),
                   Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    color: const Color(0xff3FBDF1),
+                    color: const Color.fromARGB(255, 250, 73, 73),
                     elevation: 5,
                     child: SizedBox(
                       height: 50,
                       child: InkWell(
                         splashColor: Colors.white,
                         onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const ChangePassword()));
+                          setState(() {
+                            readOnly = true;
+                          });
                         },
                         child: const Center(
                           child: Text(
-                            "Ubah Password",
+                            " Log out",
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500,

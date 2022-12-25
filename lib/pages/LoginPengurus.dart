@@ -2,12 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 import 'package:quick_letter_1/fragments/AdminFragment.dart';
 import 'package:quick_letter_1/fragments/HomeBerandaFragment.dart';
 import 'package:quick_letter_1/fragments/HomeProfileFragment.dart';
+import 'package:quick_letter_1/models/warga_model.dart';
 import 'package:quick_letter_1/pages/Home.dart';
 import 'package:quick_letter_1/pages/Login.dart';
 import 'package:quick_letter_1/providers/features.dart';
+import 'package:quick_letter_1/services/firestore.dart';
 
 class Kepengurusan extends StatefulWidget {
   const Kepengurusan({Key? key}) : super(key: key);
@@ -17,6 +20,7 @@ class Kepengurusan extends StatefulWidget {
 }
 
 class _KepengurusanState extends State<Kepengurusan> {
+  final FirestoreService firestoreService = FirestoreService();
   TextEditingController controller = TextEditingController();
 
   @override
@@ -64,11 +68,20 @@ class _KepengurusanState extends State<Kepengurusan> {
                                 ),
                                 ElevatedButton(
                                   onPressed: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => const LoginPage(),
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                      builder: (context) => MultiProvider(
+                                        providers: [
+                                          StreamProvider<
+                                              List<WargaModel>>.value(
+                                            value: firestoreService.listWarga(),
+                                            initialData: const [],
+                                            catchError: (context, object) => [],
+                                          ),
+                                        ],
+                                        child: const LoginPage(),
                                       ),
-                                    );
+                                    ));
                                   },
                                   style: ElevatedButton.styleFrom(
                                     elevation: 5,
@@ -144,10 +157,15 @@ class _KepengurusanState extends State<Kepengurusan> {
                                             HomeBerandaFragment(
                                               illustrationPath:
                                                   "images/ManagedataWarga.png",
+                                              title: 'Kelola Data Warga',
+                                              description:
+                                                  'Pengurus RT dan admin dapat mengkelola dan mengubah data setiap warga per-blok yang sudah tercantum di dalam form nya.',
                                               features: Features.Pengurus,
                                             ),
                                             controller.text == "pengurus"
-                                                ? const HomeProfileFragment()
+                                                ? const HomeProfileFragment(
+                                                    role: 'pengurus',
+                                                  )
                                                 : const KelolaAdmin(),
                                           ],
                                         ),
