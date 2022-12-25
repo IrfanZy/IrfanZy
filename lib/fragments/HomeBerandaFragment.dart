@@ -31,10 +31,27 @@ class _HomeBerandaFragmentState extends State<HomeBerandaFragment> {
             padding: const EdgeInsets.all(50),
             child: Image.asset(widget.illustrationPath),
           ),
-          const SizedBox(height: 40),
-          Container(
-            color: Colors.red,
-            height: 100,
+          const SizedBox(height: 20),
+          Column(
+            children: const [
+              Text(
+                'Cetak Surat Pengantar',
+                textAlign: TextAlign.justify,
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 20),
+              Text(
+                'Warga dapat dengan mudah mencetak surat pengantar RT dengan menekan tombol dibawah ini',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 40),
           ...widget.features
@@ -52,6 +69,7 @@ class _HomeBerandaFragmentState extends State<HomeBerandaFragment> {
                         );
                       },
                       child: Card(
+                        color: Color(0xff3FBDF1),
                         elevation: 5,
                         shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(

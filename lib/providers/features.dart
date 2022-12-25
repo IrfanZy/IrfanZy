@@ -9,7 +9,7 @@ class Features {
   static final List<FeatureModel> Warga = [
     FeatureModel(
       title: "Cetak Surat",
-      icon: Icons.abc,
+      icon: Icons.sticky_note_2,
       directPage: const FormSurat(),
     ),
   ];
@@ -17,7 +17,7 @@ class Features {
   static final List<FeatureModel> Pengurus = [
     FeatureModel(
       title: "Kelola Data",
-      icon: Icons.abc,
+      icon: Icons.manage_accounts,
       directPage: const ManageDataWarga(),
     ),
   ];
