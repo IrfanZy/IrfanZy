@@ -275,7 +275,17 @@ class _LoginPageState extends State<LoginPage> {
                               onPressed: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) => const LupaPasword(),
+                                    builder: (context) => MultiProvider(
+                                      providers: [
+                                        StreamProvider<List<UserWarga>>.value(
+                                          value:
+                                              firestoreService.listUserWarga(),
+                                          initialData: const [],
+                                          catchError: (context, object) => [],
+                                        ),
+                                      ],
+                                      child: const LupaPasword(),
+                                    ),
                                   ),
                                 );
                               },

@@ -85,20 +85,24 @@ class _FirstPageState extends State<FirstPage> {
                                         vertical: 18.0),
                                   ),
                                   onPressed: () {
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                      builder: (context) => MultiProvider(
-                                        providers: [
-                                          StreamProvider<List<UserWarga>>.value(
-                                            value: firestoreService
-                                                .listUserWarga(),
-                                            initialData: const [],
-                                            catchError: (context, object) => [],
-                                          ),
-                                        ],
-                                        child: const LoginPage(),
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                      MaterialPageRoute(
+                                        builder: (context) => MultiProvider(
+                                          providers: [
+                                            StreamProvider<
+                                                List<UserWarga>>.value(
+                                              value: firestoreService
+                                                  .listUserWarga(),
+                                              initialData: const [],
+                                              catchError: (context, object) =>
+                                                  [],
+                                            ),
+                                          ],
+                                          child: const LoginPage(),
+                                        ),
                                       ),
-                                    ));
+                                      (route) => false,
+                                    );
                                   },
                                   child: const Text(
                                     "Login",
@@ -114,7 +118,7 @@ class _FirstPageState extends State<FirstPage> {
                               Expanded(
                                 child: OutlinedButton(
                                   onPressed: () {
-                                    Navigator.of(context).push(
+                                    Navigator.of(context).pushAndRemoveUntil(
                                       MaterialPageRoute(
                                         builder: (context) => MultiProvider(
                                           providers: [
@@ -130,6 +134,7 @@ class _FirstPageState extends State<FirstPage> {
                                           child: const DaftarPage(),
                                         ),
                                       ),
+                                      (route) => false,
                                     );
                                   },
                                   // ignore: sort_child_properties_last

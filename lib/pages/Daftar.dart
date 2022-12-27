@@ -33,7 +33,7 @@ class _DaftarPageState extends State<DaftarPage> {
       );
 
       if (userCredential.user != null) {
-        await userCredential.user!.updateDisplayName(nameController.text);
+        await userCredential.user!.updateDisplayName(nikController.text);
 
         firestoreService
             .collection('user_warga')

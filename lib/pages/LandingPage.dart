@@ -88,10 +88,11 @@ class _LandingPageState extends State<LandingPage> {
                       curve: Curves.easeInOutQuint,
                     );
                   } else {
-                    Navigator.of(context).push(
+                    Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
                         builder: (context) => const FirstPage(),
                       ),
+                      (route) => false,
                     );
                   }
                 },
