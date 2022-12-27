@@ -1,5 +1,3 @@
-// ignore_for_file: file_names
-
 import 'package:flutter/material.dart';
 import 'package:quick_letter_1/widgets/TextFieldCustomProfile.dart';
 
@@ -11,13 +9,15 @@ class ChangePassword extends StatefulWidget {
 }
 
 class _ChangePasswordState extends State<ChangePassword> {
+  final TextEditingController oldPasswordController = TextEditingController(),
+      newPasswordController = TextEditingController(),
+      newPasswordController2 = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: GestureDetector(
-        onTap: () {
-          FocusManager.instance.primaryFocus?.unfocus();
-        },
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -26,7 +26,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                   Align(
                     alignment: Alignment.topRight,
                     child: Image(
-                      image: AssetImage('images/circleatas.png'),
+                      image: AssetImage('assets/image/CircleAtas.png'),
                     ),
                   ),
                 ],
@@ -36,7 +36,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                   const Image(
                     height: 200,
                     image: AssetImage(
-                      'images/ubahpassword.png',
+                      'assets/image/UbahPassword.png',
                     ),
                   ),
                   Container(
@@ -60,15 +60,18 @@ class _ChangePasswordState extends State<ChangePassword> {
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 20),
-                        const Textfieldcustomprofile(
+                        TextFieldCustomProfile(
+                          controller: oldPasswordController,
                           hint: 'Password Lama',
                         ),
                         const SizedBox(height: 20),
-                        const Textfieldcustomprofile(
+                        TextFieldCustomProfile(
+                          controller: newPasswordController,
                           hint: 'Password Baru',
                         ),
                         const SizedBox(height: 20),
-                        const Textfieldcustomprofile(
+                        TextFieldCustomProfile(
+                          controller: newPasswordController2,
                           hint: 'Konfirmasi Password',
                         ),
                         const SizedBox(height: 20),

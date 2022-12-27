@@ -1,16 +1,19 @@
-// ignore_for_file: file_names
-
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:provider/provider.dart';
+import 'package:quick_letter_1/fragments/AdminFragment.dart';
+import 'package:quick_letter_1/fragments/HomeBerandaFragment.dart';
+import 'package:quick_letter_1/fragments/HomeProfileFragment.dart';
+import 'package:quick_letter_1/models/UserPengurus.dart';
+import 'package:quick_letter_1/models/UserWarga.dart';
+import 'package:quick_letter_1/services/Constant.dart';
 
 class Beranda extends StatefulWidget {
   final String role;
-  final List<Widget> fragments;
 
   const Beranda({
     Key? key,
     required this.role,
-    required this.fragments,
   }) : super(key: key);
 
   @override
@@ -22,6 +25,10 @@ class _BerandaState extends State<Beranda> {
 
   @override
   Widget build(BuildContext context) {
+    Map<String, dynamic> user = widget.role == "pengurus"
+        ? Provider.of<UserPengurus>(context).toJson()
+        : Provider.of<UserWarga>(context).toJson();
+
     return Scaffold(
       body: Stack(
         children: [
@@ -38,10 +45,28 @@ class _BerandaState extends State<Beranda> {
                 child: (() {
                   switch (indexTab) {
                     case 0:
-                      return widget.fragments[0];
+                      return HomeBerandaFragment(
+                        illustrationPath: widget.role == "warga"
+                            ? "assets/image/FastPrint.png"
+                            : "assets/image/ManageDataWarga.png",
+                        title: widget.role == "warga"
+                            ? "Cetak Surat Pengantar"
+                            : "Kelola Data Warga",
+                        description: widget.role == "warga"
+                            ? "Warga dapat dengan mudah mencetak surat pengantar RT dengan menekan tombol dibawah ini"
+                            : "Pengurus RT dan admin dapat mengkelola dan mengubah data setiap warga per-blok yang sudah tercantum di dalam form nya.",
+                        features: widget.role == "warga"
+                            ? Features.Warga
+                            : Features.Pengurus,
+                      );
 
                     case 1:
-                      return widget.fragments[1];
+                      return widget.role == "admin"
+                          ? const KelolaAdmin()
+                          : HomeProfileFragment(
+                              role: widget.role,
+                              user: user,
+                            );
 
                     default:
                       return Container();

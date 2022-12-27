@@ -1,7 +1,5 @@
-// ignore_for_file: non_constant_identifier_names, file_names
-
 import 'package:flutter/material.dart';
-import 'package:quick_letter_1/services/services.dart';
+import 'package:quick_letter_1/services/Theme.dart';
 
 class DialogAction extends StatelessWidget {
   final BuildContext context;

@@ -1,5 +1,3 @@
-// ignore_for_file: library_private_types_in_public_api, file_names
-
 import 'package:flutter/material.dart';
 import 'package:quick_letter_1/fragments/LandingFragment.dart';
 import 'package:quick_letter_1/pages/FirstPage.dart';
@@ -20,17 +18,17 @@ class _LandingPageState extends State<LandingPage> {
         title: "Tampilan Sederhana",
         description:
             "Tampilan aplikasi yang sederhana sehingga dapat memudahkan pengguna",
-        image: "assets/gambar.svg"),
+        image: "assets/svg/Gambar.svg"),
     const LandingFragment(
         title: "Kelola Data Warga",
         description:
             "Kepengurusan RT dapat dengan mudah mengelola data warga dengan menggunakan aplikasi ini",
-        image: "assets/pesan.svg"),
+        image: "assets/svg/Pesan.svg"),
     const LandingFragment(
         title: "Fast Print",
         description:
             "Warga dapat mengisi dan langsung mencetak surat keterangan dengan mengisi form yang telah disediakan",
-        image: "assets/telepon.svg"),
+        image: "assets/svg/Telepon.svg"),
   ];
 
   _onchanged(int index) {
@@ -39,6 +37,11 @@ class _LandingPageState extends State<LandingPage> {
         _currentPage = index;
       },
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -81,8 +84,9 @@ class _LandingPageState extends State<LandingPage> {
                 onTap: () {
                   if (_controller.page != 2) {
                     _controller.nextPage(
-                        duration: const Duration(milliseconds: 800),
-                        curve: Curves.easeInOutQuint);
+                      duration: const Duration(milliseconds: 800),
+                      curve: Curves.easeInOutQuint,
+                    );
                   } else {
                     Navigator.of(context).push(
                       MaterialPageRoute(

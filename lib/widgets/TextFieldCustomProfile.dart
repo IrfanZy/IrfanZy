@@ -1,17 +1,17 @@
-// ignore_for_file: file_names
-
 import 'package:flutter/material.dart';
 
-class Textfieldcustomprofile extends StatelessWidget {
-  final String hint;
+class TextFieldCustomProfile extends StatelessWidget {
+  final TextEditingController controller;
   final IconData? icon;
+  final String hint;
   final bool filled;
   final bool readOnly;
 
-  const Textfieldcustomprofile({
+  const TextFieldCustomProfile({
     super.key,
-    required this.hint,
+    required this.controller,
     this.icon,
+    this.hint = "",
     this.filled = false,
     this.readOnly = false,
   });
@@ -19,6 +19,7 @@ class Textfieldcustomprofile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: controller,
       readOnly: readOnly,
       decoration: InputDecoration(
           filled: filled,

@@ -1,12 +1,10 @@
-// ignore_for_file: file_names
-
 import 'package:flutter/material.dart';
-import 'package:quick_letter_1/models/feature_model.dart';
-import 'package:quick_letter_1/services/firestore.dart';
+import 'package:quick_letter_1/services/Constant.dart';
+import 'package:quick_letter_1/services/Firestore.dart';
 
 class HomeBerandaFragment extends StatefulWidget {
   final String illustrationPath, title, description;
-  final List<FeatureModel> features;
+  final List<Feature> features;
 
   const HomeBerandaFragment({
     super.key,
@@ -50,7 +48,8 @@ class _HomeBerandaFragmentState extends State<HomeBerandaFragment> {
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 18,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black87,
                 ),
               ),
             ],
@@ -92,6 +91,7 @@ class _HomeBerandaFragmentState extends State<HomeBerandaFragment> {
                                 feature.title,
                                 style: const TextStyle(
                                   color: Colors.white,
+                                  fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),

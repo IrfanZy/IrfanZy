@@ -1,11 +1,9 @@
-// ignore_for_file: file_names, use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
 import 'package:flutter_html_to_pdf/flutter_html_to_pdf.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:quick_letter_1/services/constants.dart';
+import 'package:quick_letter_1/services/Constant.dart';
 import 'package:quick_letter_1/widgets/TextFieldCustom.dart';
 
 class FormSurat extends StatefulWidget {
@@ -89,22 +87,20 @@ class _FormSuratState extends State<FormSurat> {
           const Align(
             alignment: Alignment.topRight,
             child: Image(
-              image: AssetImage("images/circleatas.png"),
+              image: AssetImage("assets/image/CircleAtas.png"),
             ),
           ),
           const Align(
             alignment: Alignment.bottomLeft,
             child: Image(
-              image: AssetImage("images/circle.png"),
+              image: AssetImage("assets/image/Circle.png"),
             ),
           ),
           SizedBox(
             width: double.infinity,
             height: double.infinity,
             child: GestureDetector(
-              onTap: () {
-                FocusManager.instance.primaryFocus?.unfocus();
-              },
+              onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
               child: SingleChildScrollView(
                 padding:
                     const EdgeInsets.symmetric(vertical: 70, horizontal: 20),

@@ -1,12 +1,11 @@
-// ignore_for_file: file_names
-
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-import 'package:quick_letter_1/models/warga_model.dart';
+import 'package:quick_letter_1/models/UserWarga.dart';
 import 'package:quick_letter_1/pages/Daftar.dart';
 import 'package:quick_letter_1/pages/Login.dart';
-import 'package:quick_letter_1/services/firestore.dart';
+import 'package:quick_letter_1/services/Firestore.dart';
+import 'package:quick_letter_1/services/Theme.dart';
 
 class FirstPage extends StatefulWidget {
   const FirstPage({super.key});
@@ -26,13 +25,13 @@ class _FirstPageState extends State<FirstPage> {
           const Align(
             alignment: Alignment.topRight,
             child: Image(
-              image: AssetImage("images/circleatas.png"),
+              image: AssetImage("assets/image/CircleAtas.png"),
             ),
           ),
           const Align(
             alignment: Alignment.bottomLeft,
             child: Image(
-              image: AssetImage("images/circle.png"),
+              image: AssetImage("assets/image/Circle.png"),
             ),
           ),
           Positioned.fill(
@@ -43,12 +42,13 @@ class _FirstPageState extends State<FirstPage> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 30),
                     constraints: BoxConstraints(
-                        minHeight: MediaQuery.of(context).size.height),
+                      minHeight: ThemeService.getHeight(context),
+                    ),
                     child: Center(
                       child: Column(
                         children: [
                           Lottie.asset(
-                            'animations/lottie_newletters.json',
+                            'assets/animation/LottieNewletters.json',
                           ),
                           const SizedBox(height: 20),
                           Column(
@@ -89,9 +89,9 @@ class _FirstPageState extends State<FirstPage> {
                                         .push(MaterialPageRoute(
                                       builder: (context) => MultiProvider(
                                         providers: [
-                                          StreamProvider<
-                                              List<WargaModel>>.value(
-                                            value: firestoreService.listWarga(),
+                                          StreamProvider<List<UserWarga>>.value(
+                                            value: firestoreService
+                                                .listUserWarga(),
                                             initialData: const [],
                                             catchError: (context, object) => [],
                                           ),
@@ -119,9 +119,9 @@ class _FirstPageState extends State<FirstPage> {
                                         builder: (context) => MultiProvider(
                                           providers: [
                                             StreamProvider<
-                                                List<WargaModel>>.value(
-                                              value:
-                                                  firestoreService.listWarga(),
+                                                List<UserWarga>>.value(
+                                              value: firestoreService
+                                                  .listUserWarga(),
                                               initialData: const [],
                                               catchError: (context, object) =>
                                                   [],

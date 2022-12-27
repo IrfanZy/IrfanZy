@@ -1,12 +1,10 @@
-// ignore_for_file: file_names
-
 import 'package:flutter/material.dart';
 
-class ListDataWargaWidget extends StatelessWidget {
+class ListDataWarga extends StatelessWidget {
   final Function() actionView;
   final List<String> data;
 
-  const ListDataWargaWidget(
+  const ListDataWarga(
     this.data,
     this.actionView, {
     super.key,

@@ -1,4 +1,3 @@
-// ignore_for_file: file_names
 import 'package:flutter/material.dart';
 
 class ThemeService {
@@ -10,4 +9,9 @@ class ThemeService {
 
   static double getSizeConstraint(BuildContext context, double value) =>
       getWidth(context) * (value / 1080);
+
+  static const Color alertColorSuccess = Color(0xFF43A047);
+  static const Color alertColorError = Color(0xFFB00020);
+  static const Color alertColorWarning = Color(0xFFFFA000);
+  static const Color alertColorInfo = Color(0xFF1976D2);
 }

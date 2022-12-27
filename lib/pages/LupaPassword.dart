@@ -1,10 +1,8 @@
-// ignore_for_file: file_names
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quick_letter_1/models/warga_model.dart';
+import 'package:quick_letter_1/models/UserWarga.dart';
 import 'package:quick_letter_1/pages/Daftar.dart';
-import 'package:quick_letter_1/services/firestore.dart';
+import 'package:quick_letter_1/services/Firestore.dart';
 
 class LupaPasword extends StatefulWidget {
   const LupaPasword({Key? key}) : super(key: key);
@@ -18,20 +16,18 @@ class _LupaPaswordState extends State<LupaPasword> {
 
   @override
   Widget build(BuildContext context) {
-    // List<WargaModel> listWarga = (Provider.of<List<WargaModel>>(context));
+    // List<UserWarga> listUserWarga = (Provider.of<List<UserWarga>>(context));
 
     return Scaffold(
       body: GestureDetector(
-        onTap: () {
-          FocusManager.instance.primaryFocus?.unfocus();
-        },
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: SingleChildScrollView(
           child: Column(
             children: [
               const Align(
                 alignment: Alignment.topRight,
                 child: Image(
-                  image: AssetImage("images/circleatas.png"),
+                  image: AssetImage("assets/image/CircleAtas.png"),
                 ),
               ),
               Container(
@@ -138,8 +134,8 @@ class _LupaPaswordState extends State<LupaPasword> {
                               MaterialPageRoute(
                                 builder: (context) => MultiProvider(
                                   providers: [
-                                    StreamProvider<List<WargaModel>>.value(
-                                      value: firestoreService.listWarga(),
+                                    StreamProvider<List<UserWarga>>.value(
+                                      value: firestoreService.listUserWarga(),
                                       initialData: const [],
                                       catchError: (context, object) => [],
                                     ),
@@ -168,7 +164,7 @@ class _LupaPaswordState extends State<LupaPasword> {
               const Align(
                 alignment: Alignment.bottomLeft,
                 child: Image(
-                  image: AssetImage("images/circle.png"),
+                  image: AssetImage("assets/image/Circle.png"),
                 ),
               ),
             ],

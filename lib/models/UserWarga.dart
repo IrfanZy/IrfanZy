@@ -1,57 +1,76 @@
-// ignore_for_file: file_names
+class UserWarga {
+  final String id, name, nik, email, address, phoneNumber;
 
-class WargaModel {
-  final String name, nik, password, address, phoneNumber;
-
-  WargaModel({
+  UserWarga({
+    required this.id,
     required this.name,
     required this.nik,
-    required this.password,
+    required this.email,
     required this.address,
     required this.phoneNumber,
   });
 
-  static get empty => WargaModel(
+  static createNew({
+    required name,
+    required nik,
+    required email,
+    required address,
+    required phoneNumber,
+  }) =>
+      ({
+        "name": name,
+        "nik": nik,
+        "email": email,
+        "address": address,
+        "phoneNumber": phoneNumber,
+      });
+
+  static get empty => UserWarga(
+        id: "",
         name: "",
         nik: "",
-        password: "",
+        email: "",
         address: "",
         phoneNumber: "",
       );
 
-  static WargaModel fetch(
+  static UserWarga fetch(
     Function getSnapshot,
   ) =>
-      WargaModel(
+      UserWarga(
+        id: getSnapshot("id", "").toString(),
         name: getSnapshot("name", "").toString(),
         nik: getSnapshot("nik", "").toString(),
-        password: getSnapshot("password", "").toString(),
+        email: getSnapshot("email", "").toString(),
         address: getSnapshot("address", "").toString(),
         phoneNumber: getSnapshot("phoneNumber", "").toString(),
       );
 
   Map<String, dynamic> toJson() => {
+        "id": id,
         "name": name,
         "nik": nik,
-        "password": password,
+        "email": email,
         "address": address,
         "phoneNumber": phoneNumber,
       };
 
   @override
   bool operator ==(other) =>
-      other is WargaModel &&
+      other is UserWarga &&
+      other.id == id &&
       other.name == name &&
       other.nik == nik &&
-      other.password == password &&
+      other.email == email &&
       other.address == address &&
       other.phoneNumber == phoneNumber;
 
   @override
   int get hashCode => Object.hash(
+        id.hashCode,
         name.hashCode,
         nik.hashCode,
-        password.hashCode,
+        email.hashCode,
         address.hashCode,
         phoneNumber.hashCode,
       );

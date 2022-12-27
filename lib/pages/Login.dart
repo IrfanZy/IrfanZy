@@ -1,16 +1,16 @@
-// ignore_for_file: file_names
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:quick_letter_1/fragments/HomeBerandaFragment.dart';
-import 'package:quick_letter_1/fragments/HomeProfileFragment.dart';
-import 'package:quick_letter_1/models/warga_model.dart';
+import 'package:quick_letter_1/models/UserAdmin.dart';
+import 'package:quick_letter_1/models/UserPengurus.dart';
+import 'package:quick_letter_1/models/UserWarga.dart';
 import 'package:quick_letter_1/pages/Daftar.dart';
 import 'package:quick_letter_1/pages/Home.dart';
 import 'package:quick_letter_1/pages/LoginPengurus.dart';
 import 'package:quick_letter_1/pages/LupaPassword.dart';
-import 'package:quick_letter_1/providers/features.dart';
-import 'package:quick_letter_1/services/firestore.dart';
+import 'package:quick_letter_1/services/Firestore.dart';
+import 'package:quick_letter_1/widgets/AlertNotification.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -20,31 +20,121 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final FirebaseAuth auth = FirebaseAuth.instance;
   final FirestoreService firestoreService = FirestoreService();
+  bool isLoginProcess = false;
   TextEditingController nikController = TextEditingController(),
       passwordController = TextEditingController();
 
+  void loginAccount(UserWarga user) async {
+    try {
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+        email: user.email,
+        password: passwordController.text,
+      );
+
+      if (userCredential.user != null) {
+        AlertNotification(
+          context: context,
+          type: "success",
+          aspectRatio: 430 / 95,
+          width: 430,
+          textContent: "Berhasil login akun",
+          flexContentVertical: 38,
+          flexTextHorizontal: 315,
+          textAlign: TextAlign.start,
+          nextAction: () {
+            Hive.openBox('session').then(
+              (_) {
+                _.putAll({
+                  "id": user.id,
+                  "role": "warga",
+                });
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => MultiProvider(
+                      providers: [
+                        StreamProvider<UserWarga>.value(
+                          value: firestoreService.userWarga(user.id),
+                          initialData: UserWarga.empty,
+                          catchError: (context, object) => UserWarga.empty,
+                        ),
+                      ],
+                      child: const Beranda(role: "warga"),
+                    ),
+                  ),
+                  (Route<dynamic> route) => false,
+                );
+              },
+            );
+          },
+        );
+      } else {
+        throw Error;
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'wrong-password') {
+        AlertNotification(
+          aspectRatio: 697 / 95,
+          flexContentVertical: 38,
+          flexTextHorizontal: 582,
+          textAlign: TextAlign.start,
+          context: context,
+          type: "error",
+          width: 602,
+          textContent: "Password yang dimasukkan salah",
+          textMaxLines: 1,
+          nextAction: () => setState(() => isLoginProcess = false),
+        );
+      } else {
+        AlertNotification(
+          aspectRatio: 697 / 95,
+          flexContentVertical: 38,
+          flexTextHorizontal: 582,
+          textAlign: TextAlign.start,
+          context: context,
+          type: "warning",
+          width: 697,
+          textContent: "Terjadi kesalahan, silahkan coba kembali",
+          textMaxLines: 1,
+          nextAction: () => setState(() => isLoginProcess = false),
+        );
+      }
+    } catch (e) {
+      AlertNotification(
+        aspectRatio: 697 / 95,
+        flexContentVertical: 38,
+        flexTextHorizontal: 582,
+        textAlign: TextAlign.start,
+        context: context,
+        type: "warning",
+        width: 697,
+        textContent: "Terjadi kesalahan, silahkan coba kembali",
+        textMaxLines: 1,
+        nextAction: () => setState(() => isLoginProcess = false),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<WargaModel> listWarga = (Provider.of<List<WargaModel>>(context));
+    List<UserWarga> listUserWarga = (Provider.of<List<UserWarga>>(context));
 
     return Scaffold(
       body: GestureDetector(
-        onTap: () {
-          FocusManager.instance.primaryFocus?.unfocus();
-        },
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Stack(
           children: [
             const Align(
               alignment: Alignment.topLeft,
               child: Image(
-                image: AssetImage("images/circleataskiri.png"),
+                image: AssetImage("assets/image/CircleAtasKiri.png"),
               ),
             ),
             const Align(
               alignment: Alignment.bottomRight,
               child: Image(
-                image: AssetImage("images/circlebawahkanan.png"),
+                image: AssetImage("assets/image/CircleBawahKanan.png"),
               ),
             ),
             Positioned.fill(
@@ -70,8 +160,27 @@ class _LoginPageState extends State<LoginPage> {
                                   onPressed: () {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
-                                        builder: (context) =>
-                                            const Kepengurusan(),
+                                        builder: (context) => MultiProvider(
+                                          providers: [
+                                            StreamProvider<
+                                                List<UserAdmin>>.value(
+                                              value: firestoreService
+                                                  .listUserAdmin(),
+                                              initialData: const [],
+                                              catchError: (context, object) =>
+                                                  [],
+                                            ),
+                                            StreamProvider<
+                                                List<UserPengurus>>.value(
+                                              value: firestoreService
+                                                  .listUserPengurus(),
+                                              initialData: const [],
+                                              catchError: (context, object) =>
+                                                  [],
+                                            ),
+                                          ],
+                                          child: const Kepengurusan(),
+                                        ),
                                       ),
                                     );
                                   },
@@ -164,8 +273,11 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             TextButton(
                               onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => const LupaPasword()));
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => const LupaPasword(),
+                                  ),
+                                );
                               },
                               child: const Text(
                                 "Lupa Password?",
@@ -183,56 +295,52 @@ class _LoginPageState extends State<LoginPage> {
                                 child: InkWell(
                                   splashColor: Colors.white,
                                   onTap: () {
-                                    bool isValid = false;
+                                    FocusManager.instance.primaryFocus
+                                        ?.unfocus();
+                                    if (!isLoginProcess) {
+                                      if (nikController.text.isNotEmpty &&
+                                          passwordController.text.isNotEmpty) {
+                                        setState(() => isLoginProcess = true);
+                                        UserWarga user =
+                                            listUserWarga.firstWhere(
+                                          (_) => _.nik == nikController.text,
+                                          orElse: () => UserWarga.empty,
+                                        );
 
-                                    for (WargaModel wargaModel in listWarga) {
-                                      if (wargaModel.nik ==
-                                              nikController.text &&
-                                          wargaModel.password ==
-                                              passwordController.text) {
-                                        isValid = true;
+                                        if (user.id.isNotEmpty) {
+                                          loginAccount(user);
+                                        } else {
+                                          AlertNotification(
+                                            context: context,
+                                            type: "error",
+                                            aspectRatio: 727 / 95,
+                                            width: 727,
+                                            textAlign: TextAlign.start,
+                                            textContent:
+                                                "NIK yang dimasukkan tidak ditemukan",
+                                            flexContentVertical: 38,
+                                            flexTextHorizontal: 612,
+                                            nextAction: () => setState(
+                                              () => isLoginProcess = false,
+                                            ),
+                                          );
+                                        }
+                                      } else {
+                                        AlertNotification(
+                                          context: context,
+                                          type: "warning",
+                                          aspectRatio: 660 / 95,
+                                          width: 660,
+                                          textAlign: TextAlign.start,
+                                          textContent:
+                                              "Silahkan isi formulir dengan benar",
+                                          flexContentVertical: 38,
+                                          flexTextHorizontal: 545,
+                                          nextAction: () => setState(
+                                            () => isLoginProcess = false,
+                                          ),
+                                        );
                                       }
-                                    }
-
-                                    if (isValid) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          content: Text(
-                                            "Berhasil masuk",
-                                          ),
-                                        ),
-                                      );
-                                      Navigator.of(context).pushAndRemoveUntil(
-                                        MaterialPageRoute(
-                                          builder: (context) => Beranda(
-                                            role: "warga",
-                                            fragments: [
-                                              HomeBerandaFragment(
-                                                illustrationPath:
-                                                    "images/FastPrint.png",
-                                                title: 'Cetak Surat Pengantar',
-                                                description:
-                                                    'Warga dapat dengan mudah mencetak surat pengantar RT dengan menekan tombol dibawah ini',
-                                                features: Features.Warga,
-                                              ),
-                                              const HomeProfileFragment(
-                                                role: 'warga',
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        (Route<dynamic> route) => false,
-                                      );
-                                    } else {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          content: Text(
-                                            "NIK atau Password yang dimasukkan salah",
-                                          ),
-                                        ),
-                                      );
                                     }
                                   },
                                   child: const Center(
@@ -266,9 +374,9 @@ class _LoginPageState extends State<LoginPage> {
                                         builder: (context) => MultiProvider(
                                           providers: [
                                             StreamProvider<
-                                                List<WargaModel>>.value(
-                                              value:
-                                                  firestoreService.listWarga(),
+                                                List<UserWarga>>.value(
+                                              value: firestoreService
+                                                  .listUserWarga(),
                                               initialData: const [],
                                               catchError: (context, object) =>
                                                   [],

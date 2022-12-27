@@ -1,3 +1,37 @@
+import 'package:flutter/material.dart';
+import 'package:quick_letter_1/pages/FormSurat.dart';
+import 'package:quick_letter_1/pages/KelolaDataWarga.dart';
+
+class Feature {
+  String title;
+  IconData icon;
+  Widget directPage;
+
+  Feature({
+    required this.title,
+    required this.icon,
+    required this.directPage,
+  });
+}
+
+class Features {
+  static final List<Feature> Warga = [
+    Feature(
+      title: "Cetak Surat",
+      icon: Icons.sticky_note_2,
+      directPage: const FormSurat(),
+    ),
+  ];
+
+  static final List<Feature> Pengurus = [
+    Feature(
+      title: "Kelola Data",
+      icon: Icons.manage_accounts,
+      directPage: const ManageDataWarga(),
+    ),
+  ];
+}
+
 const templatePdfLetter = """
     <!DOCTYPE html>
     <html>

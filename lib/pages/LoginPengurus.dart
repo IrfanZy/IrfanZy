@@ -1,16 +1,13 @@
-// ignore_for_file: file_names
-
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-import 'package:quick_letter_1/fragments/AdminFragment.dart';
-import 'package:quick_letter_1/fragments/HomeBerandaFragment.dart';
-import 'package:quick_letter_1/fragments/HomeProfileFragment.dart';
-import 'package:quick_letter_1/models/warga_model.dart';
+import 'package:quick_letter_1/models/UserAdmin.dart';
+import 'package:quick_letter_1/models/UserPengurus.dart';
+import 'package:quick_letter_1/models/UserWarga.dart';
 import 'package:quick_letter_1/pages/Home.dart';
 import 'package:quick_letter_1/pages/Login.dart';
-import 'package:quick_letter_1/providers/features.dart';
-import 'package:quick_letter_1/services/firestore.dart';
+import 'package:quick_letter_1/services/Firestore.dart';
 
 class Kepengurusan extends StatefulWidget {
   const Kepengurusan({Key? key}) : super(key: key);
@@ -25,23 +22,26 @@ class _KepengurusanState extends State<Kepengurusan> {
 
   @override
   Widget build(BuildContext context) {
+    List<UserAdmin> listUserAdmin = Provider.of<List<UserAdmin>>(context);
+    List<UserPengurus> listUserPengurus = Provider.of<List<UserPengurus>>(
+      context,
+    );
+
     return Scaffold(
       body: GestureDetector(
-        onTap: () {
-          FocusManager.instance.primaryFocus?.unfocus();
-        },
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Stack(
           children: [
             const Align(
               alignment: Alignment.topRight,
               child: Image(
-                image: AssetImage('images/circleatas.png'),
+                image: AssetImage('assets/image/CircleAtas.png'),
               ),
             ),
             const Align(
               alignment: Alignment.bottomLeft,
               child: Image(
-                image: AssetImage("images/circle.png"),
+                image: AssetImage("assets/image/Circle.png"),
               ),
             ),
             Positioned.fill(
@@ -50,7 +50,7 @@ class _KepengurusanState extends State<Kepengurusan> {
                   child: Column(
                     children: [
                       Lottie.asset(
-                        'animations/lottie_Pin.json',
+                        'assets/animation/LottiePin.json',
                         width: 300,
                       ),
                       Container(
@@ -72,9 +72,9 @@ class _KepengurusanState extends State<Kepengurusan> {
                                         .push(MaterialPageRoute(
                                       builder: (context) => MultiProvider(
                                         providers: [
-                                          StreamProvider<
-                                              List<WargaModel>>.value(
-                                            value: firestoreService.listWarga(),
+                                          StreamProvider<List<UserWarga>>.value(
+                                            value: firestoreService
+                                                .listUserWarga(),
                                             initialData: const [],
                                             catchError: (context, object) => [],
                                           ),
@@ -128,7 +128,7 @@ class _KepengurusanState extends State<Kepengurusan> {
                                     Icons.lock,
                                     size: 30,
                                   ),
-                                  hintText: 'example (1234)',
+                                  hintText: ' Example (1234)',
                                   hintStyle:
                                       TextStyle(fontWeight: FontWeight.w500)),
                             ),
@@ -147,38 +147,112 @@ class _KepengurusanState extends State<Kepengurusan> {
                                 child: InkWell(
                                   splashColor: Colors.white,
                                   onTap: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => Beranda(
-                                          role: controller.text == "pengurus"
-                                              ? "pengurus"
-                                              : "admin",
-                                          fragments: [
-                                            HomeBerandaFragment(
-                                              illustrationPath:
-                                                  "images/ManagedataWarga.png",
-                                              title: 'Kelola Data Warga',
-                                              description:
-                                                  'Pengurus RT dan admin dapat mengkelola dan mengubah data setiap warga per-blok yang sudah tercantum di dalam form nya.',
-                                              features: Features.Pengurus,
-                                            ),
-                                            controller.text == "pengurus"
-                                                ? const HomeProfileFragment(
-                                                    role: 'pengurus',
-                                                  )
-                                                : const KelolaAdmin(),
-                                          ],
+                                    if (listUserAdmin.any(
+                                          (_) => _.pin == controller.text,
+                                        ) &&
+                                        listUserPengurus.any(
+                                          (_) => _.pin == controller.text,
+                                        )) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                            "PIN yang dimasukkan tidak valid",
+                                          ),
                                         ),
-                                      ),
-                                    );
+                                      );
+                                    } else {
+                                      Hive.openBox('session').then(
+                                        (_) {
+                                          _.putAll(
+                                            {
+                                              'id': listUserAdmin.any(
+                                                (_) => _.pin == controller.text,
+                                              )
+                                                  ? listUserAdmin
+                                                      .firstWhere(
+                                                        (_) =>
+                                                            _.pin ==
+                                                            controller.text,
+                                                        orElse: () =>
+                                                            UserAdmin.empty,
+                                                      )
+                                                      .id
+                                                  : listUserPengurus
+                                                      .firstWhere(
+                                                        (_) =>
+                                                            _.pin ==
+                                                            controller.text,
+                                                        orElse: () =>
+                                                            UserPengurus.empty,
+                                                      )
+                                                      .id,
+                                              'role': listUserAdmin.any(
+                                                (_) => _.pin == controller.text,
+                                              )
+                                                  ? "admin"
+                                                  : "pengurus",
+                                            },
+                                          );
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                              content: Text(
+                                                "Berhasil login akun",
+                                              ),
+                                            ),
+                                          );
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MultiProvider(
+                                                providers: [
+                                                  StreamProvider<
+                                                      UserPengurus>.value(
+                                                    value: firestoreService
+                                                        .userPengurus(
+                                                      listUserPengurus
+                                                          .firstWhere(
+                                                            (_) =>
+                                                                _.pin ==
+                                                                controller.text,
+                                                            orElse: () =>
+                                                                UserPengurus
+                                                                    .empty,
+                                                          )
+                                                          .id,
+                                                    ),
+                                                    initialData:
+                                                        UserPengurus.empty,
+                                                    catchError:
+                                                        (context, object) =>
+                                                            UserPengurus.empty,
+                                                  ),
+                                                ],
+                                                child: Beranda(
+                                                  role: listUserPengurus.any(
+                                                    (_) =>
+                                                        _.pin ==
+                                                        controller.text,
+                                                  )
+                                                      ? "pengurus"
+                                                      : "admin",
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    }
                                   },
                                   child: const Center(
                                     child: Text(
                                       "Masuk",
                                       style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.white),
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ),
                                 ),
