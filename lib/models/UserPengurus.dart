@@ -9,13 +9,11 @@ class UserPengurus {
   });
 
   static createNew({
-    required id,
     required pin,
     required name,
     required position,
   }) =>
       ({
-        "id": id,
         "pin": pin,
         "name": name,
         "position": position,
@@ -28,10 +26,7 @@ class UserPengurus {
         position: "",
       );
 
-  static UserPengurus fetch(
-    Function getSnapshot,
-  ) =>
-      UserPengurus(
+  static UserPengurus fetch(Function getSnapshot) => UserPengurus(
         id: getSnapshot("id", "").toString(),
         pin: getSnapshot("pin", "").toString(),
         name: getSnapshot("name", "").toString(),

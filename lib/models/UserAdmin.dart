@@ -11,10 +11,7 @@ class UserAdmin {
         pin: "",
       );
 
-  static UserAdmin fetch(
-    Function getSnapshot,
-  ) =>
-      UserAdmin(
+  static UserAdmin fetch(Function getSnapshot) => UserAdmin(
         id: getSnapshot("id", "").toString(),
         pin: getSnapshot("pin", "").toString(),
       );

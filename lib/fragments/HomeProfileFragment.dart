@@ -6,7 +6,6 @@ import 'package:quick_letter_1/models/UserWarga.dart';
 import 'package:quick_letter_1/pages/Login.dart';
 import 'package:quick_letter_1/pages/UbahPassword.dart';
 import 'package:quick_letter_1/services/Firestore.dart';
-import 'package:quick_letter_1/widgets/AlertNotification.dart';
 import 'package:quick_letter_1/widgets/TextFieldCustomProfile.dart';
 
 class HomeProfileFragment extends StatefulWidget {
@@ -285,40 +284,31 @@ class _HomeProfileFragmentState extends State<HomeProfileFragment> {
                                     () => Hive.openBox("session").then(
                                       (_) {
                                         _.deleteAll(['id', 'role']);
-                                        AlertNotification(
-                                          context: context,
-                                          type: "info",
-                                          aspectRatio: 800 / 156,
-                                          width: 800,
-                                          textMaxLines: 2,
-                                          textContent:
-                                              "Akun Anda akan segera keluar,\nTerimakasih telah menggunakan Aplikasi ini",
-                                          flexContentVertical: 38,
-                                          flexTextHorizontal: 685,
-                                          textAlign: TextAlign.start,
-                                          nextAction: () {
-                                            Navigator.pushAndRemoveUntil(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    MultiProvider(
-                                                  providers: [
-                                                    StreamProvider<
-                                                        List<UserWarga>>.value(
-                                                      value: firestoreService
-                                                          .listUserWarga(),
-                                                      initialData: const [],
-                                                      catchError:
-                                                          (context, object) =>
-                                                              [],
-                                                    ),
-                                                  ],
-                                                  child: const LoginPage(),
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                                "Akun Anda akan segera keluar,\nTerimakasih telah menggunakan Aplikasi ini"),
+                                          ),
+                                        );
+                                        Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => MultiProvider(
+                                              providers: [
+                                                StreamProvider<
+                                                    List<UserWarga>>.value(
+                                                  value: firestoreService
+                                                      .listUserWarga(),
+                                                  initialData: const [],
+                                                  catchError:
+                                                      (context, object) => [],
                                                 ),
-                                              ),
-                                              (route) => false,
-                                            );
-                                          },
+                                              ],
+                                              child: const LoginPage(),
+                                            ),
+                                          ),
+                                          (route) => false,
                                         );
                                       },
                                     ),

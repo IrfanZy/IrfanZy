@@ -34,10 +34,7 @@ class UserWarga {
         phoneNumber: "",
       );
 
-  static UserWarga fetch(
-    Function getSnapshot,
-  ) =>
-      UserWarga(
+  static UserWarga fetch(Function getSnapshot) => UserWarga(
         id: getSnapshot("id", "").toString(),
         name: getSnapshot("name", "").toString(),
         nik: getSnapshot("nik", "").toString(),

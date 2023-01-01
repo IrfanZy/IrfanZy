@@ -6,7 +6,6 @@ import 'package:quick_letter_1/pages/Daftar.dart';
 import 'package:quick_letter_1/pages/Login.dart';
 import 'package:quick_letter_1/services/Firestore.dart';
 import 'package:quick_letter_1/services/Theme.dart';
-import 'package:quick_letter_1/widgets/AlertNotification.dart';
 
 class LupaPasword extends StatefulWidget {
   const LupaPasword({Key? key}) : super(key: key);
@@ -38,102 +37,66 @@ class _LupaPaswordState extends State<LupaPasword> {
       if (emailVerified.isNotEmpty) {
         try {
           await auth.sendPasswordResetEmail(email: emailVerified);
-          AlertNotification(
-            context: context,
-            type: "success",
-            width: 882,
-            aspectRatio: 882 / 95,
-            flexContentVertical: 38,
-            flexTextHorizontal: 882 - 115,
-            textContent: "Link reset password telah terkirim melalui email",
-            nextAction: () {
-              setState(() => isSendEmailProcess = false);
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MultiProvider(
-                    providers: [
-                      StreamProvider<List<UserWarga>>.value(
-                        value: firestoreService.listUserWarga(),
-                        initialData: const [],
-                        catchError: (context, object) => [],
-                      ),
-                    ],
-                    child: const LoginPage(),
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Link reset password telah terkirim melalui email"),
+            ),
+          );
+          setState(() => isSendEmailProcess = false);
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MultiProvider(
+                providers: [
+                  StreamProvider<List<UserWarga>>.value(
+                    value: firestoreService.listUserWarga(),
+                    initialData: const [],
+                    catchError: (context, object) => [],
                   ),
-                ),
-                (route) => false,
-              );
-            },
+                ],
+                child: const LoginPage(),
+              ),
+            ),
+            (route) => false,
           );
         } on FirebaseAuthException catch (e) {
           if (e.code == "invalid-email") {
-            AlertNotification(
-              context: context,
-              type: "warning",
-              width: 699,
-              aspectRatio: 699 / 95,
-              flexContentVertical: 38,
-              flexTextHorizontal: 699 - 115,
-              textContent: "Terdapat kesalahan pada email terdaftar",
-              nextAction: () {
-                setState(() => isSendEmailProcess = false);
-              },
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Terdapat kesalahan pada email terdaftar"),
+              ),
             );
+            setState(() => isSendEmailProcess = false);
           } else if (e.code == "auth/user-not-found") {
-            AlertNotification(
-              context: context,
-              type: "warning",
-              width: 496,
-              aspectRatio: 430 / 95,
-              flexContentVertical: 38,
-              flexTextHorizontal: 315,
-              textContent: "Pengguna tidak ditemukan",
-              nextAction: () {
-                setState(() => isSendEmailProcess = false);
-              },
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Pengguna tidak ditemukan"),
+              ),
             );
+            setState(() => isSendEmailProcess = false);
           } else {
-            AlertNotification(
-              context: context,
-              type: "warning",
-              width: 697,
-              aspectRatio: 697 / 95,
-              flexContentVertical: 38,
-              flexTextHorizontal: 697 - 115,
-              textContent: "Terjadi kesalahan, silahkan coba kembali",
-              nextAction: () {
-                setState(() => isSendEmailProcess = false);
-              },
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Terjadi kesalahan, silahkan coba kembali"),
+              ),
             );
+            setState(() => isSendEmailProcess = false);
           }
         } catch (e) {
-          AlertNotification(
-            context: context,
-            type: "warning",
-            width: 697,
-            aspectRatio: 697 / 95,
-            flexContentVertical: 38,
-            flexTextHorizontal: 697 - 115,
-            textContent: "Terjadi kesalahan, silahkan coba kembali",
-            nextAction: () {
-              setState(() => isSendEmailProcess = false);
-            },
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Terjadi kesalahan, silahkan coba kembali"),
+            ),
           );
+          setState(() => isSendEmailProcess = false);
         }
       } else {
-        AlertNotification(
-          context: context,
-          type: "warning",
-          width: 496,
-          aspectRatio: 496 / 95,
-          flexContentVertical: 38,
-          flexTextHorizontal: 496 - 115,
-          textContent: "Pengguna tidak ditemukan",
-          nextAction: () {
-            setState(() => isSendEmailProcess = false);
-          },
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Pengguna tidak ditemukan"),
+          ),
         );
+        setState(() => setState(() => isSendEmailProcess = false));
       }
     }
   }

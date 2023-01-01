@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:quick_letter_1/models/DataWarga.dart';
+import 'package:quick_letter_1/services/Firestore.dart';
 
 class ListDataWarga extends StatelessWidget {
-  final Function() actionView;
-  final List<String> data;
+  final Function(DataWarga data) actionView;
+  final List<DataWarga> data;
 
   const ListDataWarga(
     this.data,
@@ -21,29 +23,95 @@ class ListDataWarga extends StatelessWidget {
       ),
       children: data
           .map(
-            (e) => Padding(
+            (_) => Padding(
               padding: const EdgeInsets.symmetric(vertical: 5),
               child: Card(
                 elevation: 5,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(6),
+                  ),
+                ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 5,
-                    horizontal: 20,
+                  padding: const EdgeInsets.only(
+                    top: 10,
+                    bottom: 10,
+                    left: 20,
+                    right: 10,
                   ),
                   child: Row(
                     children: [
                       Expanded(
-                        child: Text(
-                          e,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w500,
-                          ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _.name,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              "NIK : ${_.nik}",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black.withOpacity(0.5),
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      TextButton(
-                        onPressed: actionView,
-                        child: const Text("View"),
-                      )
+                      PopupMenuButton(
+                        padding: EdgeInsets.zero,
+                        itemBuilder: (context) => [
+                          const PopupMenuItem(
+                            value: 1,
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: Text(
+                                "Lihat Detail",
+                                textAlign: TextAlign.end,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const PopupMenuItem(
+                            value: 2,
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: Text(
+                                "Hapus Data",
+                                textAlign: TextAlign.end,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                        onSelected: (int value) {
+                          switch (value) {
+                            case 1:
+                              actionView(_);
+                              break;
+
+                            case 2:
+                              FirestoreService().deleteDataWarga(id: _.id);
+                              break;
+
+                            default:
+                              break;
+                          }
+                        },
+                        child: const Icon(
+                          Icons.more_vert,
+                          size: 20,
+                        ),
+                      ),
                     ],
                   ),
                 ),

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:quick_letter_1/models/DataWarga.dart';
 import 'package:quick_letter_1/models/UserAdmin.dart';
 import 'package:quick_letter_1/models/UserPengurus.dart';
 import 'package:quick_letter_1/models/UserWarga.dart';
@@ -26,6 +27,16 @@ class FirestoreService {
         return emptyValue;
       }
     }
+  }
+
+  Future<void> takeAction({
+    required Future<dynamic> future,
+    Function? onError,
+    Function? onSuccess,
+  }) async {
+    await future
+        .catchError((error) => (onError != null) ? onError() : null)
+        .then((value) => (onSuccess != null) ? onSuccess() : null);
   }
 
   Stream<T> docStream<T>({
@@ -71,6 +82,11 @@ class FirestoreService {
               )
           : const Stream.empty();
 
+  Stream<List<DataWarga>> listDataWarga() => collectionStream<DataWarga>(
+        path: "data_warga",
+        fetch: DataWarga.fetch,
+      );
+
   Stream<List<UserWarga>> listUserWarga() => collectionStream<UserWarga>(
         path: "user_warga",
         fetch: UserWarga.fetch,
@@ -104,4 +120,41 @@ class FirestoreService {
         docId: id,
         fetch: UserPengurus.fetch,
       );
+
+  void addDataWarga({
+    required Map<String, dynamic> data,
+    Function? onSuccess,
+    Function? onError,
+  }) {
+    takeAction(
+      future: collection("data_warga").add(data),
+      onError: onError,
+      onSuccess: onSuccess,
+    );
+  }
+
+  void updateDataWarga({
+    required String id,
+    required Map<String, dynamic> data,
+    Function? onSuccess,
+    Function? onError,
+  }) {
+    takeAction(
+      future: doc("data_warga", id).update(data),
+      onError: onError,
+      onSuccess: onSuccess,
+    );
+  }
+
+  void deleteDataWarga({
+    required String id,
+    Function? onSuccess,
+    Function? onError,
+  }) {
+    takeAction(
+      future: doc("data_warga", id).delete(),
+      onError: onError,
+      onSuccess: onSuccess,
+    );
+  }
 }

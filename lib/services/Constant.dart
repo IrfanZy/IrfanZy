@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:quick_letter_1/models/DataWarga.dart';
 import 'package:quick_letter_1/pages/FormSurat.dart';
 import 'package:quick_letter_1/pages/KelolaDataWarga.dart';
+import 'package:quick_letter_1/services/Firestore.dart';
 
 class Feature {
   String title;
@@ -27,7 +30,16 @@ class Features {
     Feature(
       title: "Kelola Data",
       icon: Icons.manage_accounts,
-      directPage: const ManageDataWarga(),
+      directPage: MultiProvider(
+        providers: [
+          StreamProvider<List<DataWarga>>.value(
+            value: FirestoreService().listDataWarga(),
+            initialData: const [],
+            catchError: (context, object) => [],
+          ),
+        ],
+        child: const ManageDataWarga(),
+      ),
     ),
   ];
 }

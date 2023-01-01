@@ -4,7 +4,8 @@ class TextFieldCustom extends StatelessWidget {
   final TextEditingController controller;
   final String hint;
   final IconData? icon;
-  final bool filled;
+  final bool filled, readOnly;
+  final FocusNode? focusNode;
 
   const TextFieldCustom({
     super.key,
@@ -12,12 +13,16 @@ class TextFieldCustom extends StatelessWidget {
     required this.hint,
     this.icon,
     this.filled = false,
+    this.readOnly = false,
+    this.focusNode,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
+      focusNode: focusNode,
+      readOnly: readOnly,
       decoration: InputDecoration(
           filled: filled,
           fillColor: filled ? Colors.white : Colors.transparent,
