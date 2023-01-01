@@ -1,15 +1,23 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:quick_letter_1/models/UserPengurus.dart';
 import 'package:quick_letter_1/models/UserWarga.dart';
 import 'package:quick_letter_1/pages/Login.dart';
 import 'package:quick_letter_1/services/Firestore.dart';
+import 'package:quick_letter_1/widgets/CardDataPengurus.dart';
 import 'package:quick_letter_1/widgets/DialogAction.dart';
 import 'package:quick_letter_1/widgets/TextFieldCustom.dart';
 
 class KelolaAdmin extends StatefulWidget {
-  const KelolaAdmin({super.key});
+  final List<UserPengurus> listUserPengurus;
+
+  const KelolaAdmin({
+    super.key,
+    required this.listUserPengurus,
+  });
 
   @override
   State<KelolaAdmin> createState() => _KelolaAdminState();
@@ -19,7 +27,14 @@ class _KelolaAdminState extends State<KelolaAdmin> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirestoreService firestoreService = FirestoreService();
   final TextEditingController controller = TextEditingController();
-  bool visibleDialogAddData = false, isLogoutProcess = false;
+  final Map<String, TextEditingController> controllers = {
+    "pin": TextEditingController(),
+    "name": TextEditingController(),
+    "position": TextEditingController(),
+  };
+  bool visibleDialogAddData = false,
+      isLogoutProcess = false,
+      isCreateProcess = false;
 
   @override
   Widget build(BuildContext context) {
@@ -149,8 +164,16 @@ class _KelolaAdminState extends State<KelolaAdmin> {
                     ),
                   ),
                   Expanded(
-                    child: Container(
-                      color: Colors.red,
+                    child: ListView(
+                      padding: const EdgeInsets.only(
+                        left: 15,
+                        right: 15,
+                        top: 20,
+                        bottom: 100,
+                      ),
+                      children: widget.listUserPengurus
+                          .map((_) => CardDataPengurus(_))
+                          .toList(),
                     ),
                   )
                 ],
@@ -160,11 +183,7 @@ class _KelolaAdminState extends State<KelolaAdmin> {
               bottom: 150,
               right: 50,
               child: FloatingActionButton(
-                onPressed: () {
-                  setState(() {
-                    visibleDialogAddData = true;
-                  });
-                },
+                onPressed: () => setState(() => visibleDialogAddData = true),
                 backgroundColor: const Color(0xff3FBDF1),
                 child: const Icon(Icons.add),
               ),
@@ -177,23 +196,95 @@ class _KelolaAdminState extends State<KelolaAdmin> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   TextFieldCustom(
-                    controller: controller,
+                    controller: controllers["name"]!,
                     hint: "Nama",
                   ),
                   const SizedBox(height: 20),
                   TextFieldCustom(
-                    controller: controller,
+                    controller: controllers["position"]!,
                     hint: "Jabatan",
                   ),
                   const SizedBox(height: 20),
                   TextFieldCustom(
-                    controller: controller,
+                    controller: controllers["pin"]!,
                     hint: "Pin",
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
                   ),
                   const SizedBox(height: 20),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      if (!isCreateProcess &&
+                          controllers["pin"]!.text.isNotEmpty &&
+                          controllers["name"]!.text.isNotEmpty &&
+                          controllers["position"]!.text.isNotEmpty) {
+                        setState(() => isCreateProcess = true);
+                        if ((await firestoreService
+                                        .collection("user_pengurus")
+                                        .where(
+                                          "pin",
+                                          isEqualTo: controllers["pin"]!.text,
+                                        )
+                                        .get())
+                                    .size ==
+                                0 &&
+                            (await firestoreService
+                                        .collection("user_admin")
+                                        .where(
+                                          "pin",
+                                          isEqualTo: controllers["pin"]!.text,
+                                        )
+                                        .get())
+                                    .size ==
+                                0) {
+                          firestoreService.addUserPengurus(
+                              data: UserPengurus.createNew(
+                                pin: controllers["pin"]!.text,
+                                name: controllers["name"]!.text,
+                                position: controllers["position"]!.text,
+                              ),
+                              onSuccess: () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      "Berhasil menambahkan akun pengurus",
+                                    ),
+                                  ),
+                                );
+                                setState(() {
+                                  isCreateProcess = false;
+                                  visibleDialogAddData = false;
+                                });
+                                controllers["pin"]!.clear();
+                                controllers["name"]!.clear();
+                                controllers["position"]!.clear();
+                              },
+                              onError: () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      "Gagal membuat akun pengurus, silahkan coba kembali",
+                                    ),
+                                  ),
+                                );
+                                setState(() => isCreateProcess = false);
+                              });
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                "PIN telah digunakan pada akun lain",
+                              ),
+                            ),
+                          );
+                          setState(() => isCreateProcess = false);
+                        }
+                      }
+                    },
                     style: ElevatedButton.styleFrom(
                       elevation: 5,
                       minimumSize: const Size(80, 45),
@@ -204,11 +295,7 @@ class _KelolaAdminState extends State<KelolaAdmin> {
                   ),
                 ],
               ),
-              closeAction: () {
-                setState(() {
-                  visibleDialogAddData = false;
-                });
-              },
+              closeAction: () => setState(() => visibleDialogAddData = false),
             ),
           ],
         ),

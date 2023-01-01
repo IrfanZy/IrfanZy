@@ -91,6 +91,11 @@ class App extends StatelessWidget {
                                 catchError: (context, object) =>
                                     UserAdmin.empty,
                               ),
+                              StreamProvider<List<UserPengurus>>.value(
+                                value: firestoreService.listUserPengurus(),
+                                initialData: const [],
+                                catchError: (context, object) => [],
+                              ),
                             ],
                             child: Beranda(
                               role: __.data!.get("role").toString(),

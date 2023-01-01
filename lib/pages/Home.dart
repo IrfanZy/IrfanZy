@@ -65,7 +65,11 @@ class _BerandaState extends State<Beranda> {
 
                     case 1:
                       return widget.role == "admin"
-                          ? const KelolaAdmin()
+                          ? KelolaAdmin(
+                              listUserPengurus: Provider.of<List<UserPengurus>>(
+                                context,
+                              ),
+                            )
                           : HomeProfileFragment(
                               role: widget.role,
                               user: user,

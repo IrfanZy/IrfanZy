@@ -147,10 +147,10 @@ class _KepengurusanState extends State<Kepengurusan> {
                                 child: InkWell(
                                   splashColor: Colors.white,
                                   onTap: () {
-                                    if (listUserAdmin.any(
+                                    if (!listUserAdmin.any(
                                           (_) => _.pin == controller.text,
                                         ) &&
-                                        listUserPengurus.any(
+                                        !listUserPengurus.any(
                                           (_) => _.pin == controller.text,
                                         )) {
                                       ScaffoldMessenger.of(context)
@@ -206,10 +206,11 @@ class _KepengurusanState extends State<Kepengurusan> {
                                             MaterialPageRoute(
                                               builder: (context) =>
                                                   MultiProvider(
-                                                providers: [
-                                                  _.get('role') == "pengurus"
-                                                      ? StreamProvider<
-                                                          UserPengurus>.value(
+                                                providers: _.get('role') ==
+                                                        "pengurus"
+                                                    ? [
+                                                        StreamProvider<
+                                                            UserPengurus>.value(
                                                           value:
                                                               firestoreService
                                                                   .userPengurus(
@@ -233,8 +234,10 @@ class _KepengurusanState extends State<Kepengurusan> {
                                                               UserPengurus
                                                                   .empty,
                                                         )
-                                                      : StreamProvider<
-                                                          UserAdmin>.value(
+                                                      ]
+                                                    : [
+                                                        StreamProvider<
+                                                            UserAdmin>.value(
                                                           value:
                                                               firestoreService
                                                                   .userAdmin(
@@ -256,7 +259,17 @@ class _KepengurusanState extends State<Kepengurusan> {
                                                                   object) =>
                                                               UserAdmin.empty,
                                                         ),
-                                                ],
+                                                        StreamProvider<
+                                                            List<
+                                                                UserPengurus>>.value(
+                                                          value: firestoreService
+                                                              .listUserPengurus(),
+                                                          initialData: const [],
+                                                          catchError: (context,
+                                                                  object) =>
+                                                              [],
+                                                        ),
+                                                      ],
                                                 child: Beranda(
                                                   role: listUserPengurus.any(
                                                     (_) =>

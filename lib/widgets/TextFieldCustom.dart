@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class TextFieldCustom extends StatelessWidget {
   final TextEditingController controller;
@@ -6,6 +7,8 @@ class TextFieldCustom extends StatelessWidget {
   final IconData? icon;
   final bool filled, readOnly;
   final FocusNode? focusNode;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter> inputFormatters;
 
   const TextFieldCustom({
     super.key,
@@ -15,6 +18,8 @@ class TextFieldCustom extends StatelessWidget {
     this.filled = false,
     this.readOnly = false,
     this.focusNode,
+    this.keyboardType,
+    this.inputFormatters = const [],
   });
 
   @override
@@ -23,6 +28,8 @@ class TextFieldCustom extends StatelessWidget {
       controller: controller,
       focusNode: focusNode,
       readOnly: readOnly,
+      keyboardType: keyboardType,
+      inputFormatters: inputFormatters,
       decoration: InputDecoration(
           filled: filled,
           fillColor: filled ? Colors.white : Colors.transparent,

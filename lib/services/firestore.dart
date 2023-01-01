@@ -133,6 +133,18 @@ class FirestoreService {
     );
   }
 
+  void addUserPengurus({
+    required Map<String, dynamic> data,
+    Function? onSuccess,
+    Function? onError,
+  }) {
+    takeAction(
+      future: collection("user_pengurus").add(data),
+      onError: onError,
+      onSuccess: onSuccess,
+    );
+  }
+
   void updateDataWarga({
     required String id,
     required Map<String, dynamic> data,
@@ -153,6 +165,18 @@ class FirestoreService {
   }) {
     takeAction(
       future: doc("data_warga", id).delete(),
+      onError: onError,
+      onSuccess: onSuccess,
+    );
+  }
+
+  void deleteUserPengurus({
+    required String id,
+    Function? onSuccess,
+    Function? onError,
+  }) {
+    takeAction(
+      future: doc("user_pengurus", id).delete(),
       onError: onError,
       onSuccess: onSuccess,
     );
