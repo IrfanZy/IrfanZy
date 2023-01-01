@@ -74,7 +74,7 @@ class CardDataPengurus extends StatelessWidget {
                     FirestoreService().deleteUserPengurus(id: userPengurus.id),
                 icon: const Icon(
                   Icons.delete_rounded,
-                  color: Colors.redAccent,
+                  color: Color.fromARGB(255, 250, 73, 73),
                 ),
               )
             ],

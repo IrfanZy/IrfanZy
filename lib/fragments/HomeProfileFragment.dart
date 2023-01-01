@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:quick_letter_1/models/UserPengurus.dart';
 import 'package:quick_letter_1/models/UserWarga.dart';
 import 'package:quick_letter_1/pages/Login.dart';
 import 'package:quick_letter_1/pages/UbahPassword.dart';
@@ -256,7 +257,10 @@ class _HomeProfileFragmentState extends State<HomeProfileFragment> {
                                               ),
                                             );
                                             setState(
-                                              () => isUpdateProcess = false,
+                                              () {
+                                                isUpdateProcess = false;
+                                                readOnly = true;
+                                              },
                                             );
                                           },
                                           onError: () {
@@ -293,7 +297,10 @@ class _HomeProfileFragmentState extends State<HomeProfileFragment> {
                                               ),
                                             );
                                             setState(
-                                              () => isUpdateProcess = false,
+                                              () {
+                                                isUpdateProcess = false;
+                                                readOnly = true;
+                                              },
                                             );
                                           },
                                           onError: () {
@@ -346,13 +353,37 @@ class _HomeProfileFragmentState extends State<HomeProfileFragment> {
                           if (widget.role == "pengurus") {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => const ChangePin(),
+                                builder: (context) => MultiProvider(
+                                  providers: [
+                                    StreamProvider<UserPengurus>.value(
+                                      value: firestoreService.userPengurus(
+                                        widget.user["id"] ?? "",
+                                      ),
+                                      initialData: UserPengurus.empty,
+                                      catchError: (context, object) =>
+                                          UserPengurus.empty,
+                                    ),
+                                  ],
+                                  child: const ChangePin(),
+                                ),
                               ),
                             );
                           } else {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => const ChangePassword(),
+                                builder: (context) => MultiProvider(
+                                  providers: [
+                                    StreamProvider<UserWarga>.value(
+                                      value: firestoreService.userWarga(
+                                        widget.user["id"] ?? "",
+                                      ),
+                                      initialData: UserWarga.empty,
+                                      catchError: (context, object) =>
+                                          UserWarga.empty,
+                                    ),
+                                  ],
+                                  child: const ChangePassword(),
+                                ),
                               ),
                             );
                           }

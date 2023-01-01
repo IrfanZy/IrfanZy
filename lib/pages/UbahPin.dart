@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:quick_letter_1/models/UserPengurus.dart';
+import 'package:quick_letter_1/services/Firestore.dart';
 import 'package:quick_letter_1/widgets/TextFieldCustomProfile.dart';
 
 class ChangePin extends StatefulWidget {
@@ -9,12 +12,17 @@ class ChangePin extends StatefulWidget {
 }
 
 class _ChangePinState extends State<ChangePin> {
+  final FirestoreService firestoreService = FirestoreService();
   final TextEditingController oldPinController = TextEditingController(),
       newPinController = TextEditingController(),
       newPinController2 = TextEditingController();
 
+  bool isChangePinProcess = false;
+
   @override
   Widget build(BuildContext context) {
+    UserPengurus user = Provider.of<UserPengurus>(context);
+
     return Scaffold(
       body: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -52,7 +60,7 @@ class _ChangePinState extends State<ChangePin> {
                         ),
                         const SizedBox(height: 15),
                         const Text(
-                          "PIN yang baru harus berbeda dengan kata sandi yang sebelumnya.",
+                          "PIN yang baru harus berbeda dengan PIN yang digunakan sebelumnya.",
                           style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w500,
@@ -85,7 +93,117 @@ class _ChangePinState extends State<ChangePin> {
                             height: 60,
                             child: InkWell(
                               splashColor: Colors.white,
-                              onTap: () {},
+                              onTap: () async {
+                                if (!isChangePinProcess &&
+                                    oldPinController.text.isNotEmpty &&
+                                    newPinController.text.isNotEmpty &&
+                                    newPinController2.text.isNotEmpty) {
+                                  if (newPinController.text ==
+                                          newPinController2.text &&
+                                      oldPinController.text == user.pin &&
+                                      newPinController.text != user.pin) {
+                                    if ((await firestoreService
+                                                    .collection("user_pengurus")
+                                                    .where(
+                                                      "pin",
+                                                      isEqualTo:
+                                                          newPinController.text,
+                                                    )
+                                                    .get())
+                                                .size ==
+                                            0 &&
+                                        (await firestoreService
+                                                    .collection("user_admin")
+                                                    .where(
+                                                      "pin",
+                                                      isEqualTo:
+                                                          newPinController.text,
+                                                    )
+                                                    .get())
+                                                .size ==
+                                            0) {
+                                      firestoreService.updateUserPengurus(
+                                          id: user.id,
+                                          data: {"pin": newPinController.text},
+                                          onSuccess: () {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                  "Berhasil memperbarui PIN",
+                                                ),
+                                              ),
+                                            );
+                                            setState(
+                                              () => isChangePinProcess = false,
+                                            );
+                                            oldPinController.clear();
+                                            newPinController.clear();
+                                            newPinController2.clear();
+                                          },
+                                          onError: () {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                  "Gagal memperbarui PIN, silahkan coba kembali",
+                                                ),
+                                              ),
+                                            );
+                                            setState(
+                                              () => isChangePinProcess = false,
+                                            );
+                                          });
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                            "PIN telah digunakan pada akun lain",
+                                          ),
+                                        ),
+                                      );
+                                      setState(
+                                        () => isChangePinProcess = false,
+                                      );
+                                    }
+                                  } else if (newPinController.text !=
+                                      newPinController2.text) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          "PIN baru yang dimasukkan tidak cocok",
+                                        ),
+                                      ),
+                                    );
+                                    setState(() => isChangePinProcess = false);
+                                  } else if (oldPinController.text !=
+                                      user.pin) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          "PIN lama yang dimasukkan salah",
+                                        ),
+                                      ),
+                                    );
+                                    setState(
+                                      () => isChangePinProcess = false,
+                                    );
+                                  } else if (newPinController.text ==
+                                      user.pin) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          "PIN baru harus berbeda dari PIN sebelumnya",
+                                        ),
+                                      ),
+                                    );
+                                    setState(
+                                      () => isChangePinProcess = false,
+                                    );
+                                  }
+                                }
+                              },
                               child: const Center(
                                 child: Text(
                                   "Ganti Pin",

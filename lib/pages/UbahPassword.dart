@@ -1,4 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:quick_letter_1/models/UserWarga.dart';
+import 'package:quick_letter_1/services/Firestore.dart';
 import 'package:quick_letter_1/widgets/TextFieldCustomProfile.dart';
 
 class ChangePassword extends StatefulWidget {
@@ -9,12 +13,105 @@ class ChangePassword extends StatefulWidget {
 }
 
 class _ChangePasswordState extends State<ChangePassword> {
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final FirestoreService firestoreService = FirestoreService();
   final TextEditingController oldPasswordController = TextEditingController(),
       newPasswordController = TextEditingController(),
       newPasswordController2 = TextEditingController();
 
+  UserWarga user = UserWarga.empty;
+  bool isUpdateProcess = false;
+
+  void handleChangePassword() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    if (newPasswordController.text.length >= 8 &&
+        newPasswordController2.text.length >= 8) {
+      if (!isUpdateProcess) {
+        setState(() => isUpdateProcess = true);
+        if (newPasswordController.text != newPasswordController2.text) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                "Password baru yang dimasukkan tidak cocok",
+              ),
+            ),
+          );
+          setState(() => isUpdateProcess = false);
+        } else {
+          try {
+            UserCredential userCredential =
+                await auth.currentUser!.reauthenticateWithCredential(
+              EmailAuthProvider.credential(
+                email: user.email,
+                password: oldPasswordController.text,
+              ),
+            );
+
+            if (userCredential.user != null) {
+              await userCredential.user!.updatePassword(
+                  newPasswordController.text.toString().replaceAll(' ', ''));
+
+              oldPasswordController.clear();
+              newPasswordController.clear();
+              newPasswordController2.clear();
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text(
+                    "Berhasil memperbarui password akun",
+                  ),
+                ),
+              );
+              setState(() => isUpdateProcess = false);
+            } else {
+              throw Error;
+            }
+          } on FirebaseAuthException catch (e) {
+            if (e.code == "wrong-password") {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text(
+                    "Password lama yang dimasukkan salah",
+                  ),
+                ),
+              );
+              setState(() => isUpdateProcess = false);
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text(
+                    "Terjadi kesalahan, silahkan coba kembali",
+                  ),
+                ),
+              );
+              setState(() => isUpdateProcess = false);
+            }
+          } catch (e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                  "Terjadi kesalahan, silahkan coba kembali",
+                ),
+              ),
+            );
+            setState(() => isUpdateProcess = false);
+          }
+        }
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            "Password harus terdiri dari minimal 8 karakter",
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    user = Provider.of<UserWarga>(context);
+
     return Scaffold(
       body: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -85,7 +182,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                             height: 60,
                             child: InkWell(
                               splashColor: Colors.white,
-                              onTap: () {},
+                              onTap: handleChangePassword,
                               child: const Center(
                                 child: Text(
                                   "Ganti Password",

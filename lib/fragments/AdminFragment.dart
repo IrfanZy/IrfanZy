@@ -26,7 +26,6 @@ class KelolaAdmin extends StatefulWidget {
 class _KelolaAdminState extends State<KelolaAdmin> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirestoreService firestoreService = FirestoreService();
-  final TextEditingController controller = TextEditingController();
   final Map<String, TextEditingController> controllers = {
     "pin": TextEditingController(),
     "name": TextEditingController(),
