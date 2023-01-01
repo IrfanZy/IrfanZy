@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:quick_letter_1/models/UserWarga.dart';
 import 'package:quick_letter_1/pages/Login.dart';
 import 'package:quick_letter_1/pages/UbahPassword.dart';
+import 'package:quick_letter_1/pages/UbahPin.dart';
 import 'package:quick_letter_1/services/Firestore.dart';
 import 'package:quick_letter_1/widgets/TextFieldCustomProfile.dart';
 
@@ -28,18 +29,18 @@ class _HomeProfileFragmentState extends State<HomeProfileFragment> {
   final Map<String, Map<String, dynamic>> controllers =
       Map<String, Map<String, dynamic>>.from({});
 
-  bool readOnly = true, isLogoutProcess = false;
+  bool readOnly = true, isLogoutProcess = false, isUpdateProcess = false;
 
   @override
   Widget build(BuildContext context) {
     if (controllers.isEmpty) {
       if (widget.role == "pengurus") {
         controllers.addAll({
-          "nama": {
+          "name": {
             "label": "Nama",
             "controller": TextEditingController(text: widget.user["name"]),
           },
-          "jabatan": {
+          "position": {
             "label": "Jabatan",
             "controller": TextEditingController(text: widget.user["position"]),
           },
@@ -142,30 +143,38 @@ class _HomeProfileFragmentState extends State<HomeProfileFragment> {
                         ),
                         Align(
                           alignment: Alignment.bottomRight,
-                          child: Container(
-                            width: 35,
-                            height: 35,
-                            decoration: const BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(1000),
-                                )),
-                            child: const Icon(
-                              Icons.add_photo_alternate_outlined,
-                              color: Colors.white,
-                              size: 15,
-                            ),
+                          child: AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 300),
+                            transitionBuilder: (Widget child,
+                                    Animation<double> animation) =>
+                                ScaleTransition(scale: animation, child: child),
+                            child: !readOnly
+                                ? GestureDetector(
+                                    onTap: () {
+                                      //
+                                    },
+                                    child: Container(
+                                      key: const ValueKey<bool>(true),
+                                      width: 35,
+                                      height: 35,
+                                      decoration: const BoxDecoration(
+                                        color: Colors.black,
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(1000),
+                                        ),
+                                      ),
+                                      child: const Icon(
+                                        Icons.add_photo_alternate_outlined,
+                                        color: Colors.white,
+                                        size: 15,
+                                      ),
+                                    ),
+                                  )
+                                : const SizedBox.shrink(),
                           ),
                         )
                       ],
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const Text(
-                    'Ubah Foto Profile',
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 20),
                   ...controllers.keys
@@ -188,7 +197,8 @@ class _HomeProfileFragmentState extends State<HomeProfileFragment> {
                               controller: (controllers[_]!["controller"]
                                   as TextEditingController),
                               filled: true,
-                              readOnly: readOnly,
+                              readOnly:
+                                  readOnly || (_ == "nik" || _ == "email"),
                             ),
                             const SizedBox(height: 15),
                           ],
@@ -213,7 +223,95 @@ class _HomeProfileFragmentState extends State<HomeProfileFragment> {
                               height: 50,
                               child: InkWell(
                                 splashColor: Colors.white,
-                                onTap: () => setState(() => readOnly = true),
+                                onTap: () {
+                                  if (!isUpdateProcess &&
+                                      controllers.keys.every((_) =>
+                                          (controllers[_]!["controller"]
+                                                  as TextEditingController)
+                                              .text
+                                              .isNotEmpty)) {
+                                    setState(() => isUpdateProcess = true);
+                                    if (widget.role == "warga") {
+                                      firestoreService.updateUserWarga(
+                                          id: widget.user["id"] ?? "",
+                                          data: {
+                                            "name": controllers["name"]![
+                                                    "controller"]!
+                                                .text,
+                                            "address": controllers["address"]![
+                                                    "controller"]!
+                                                .text,
+                                            "phoneNumber":
+                                                controllers["phoneNumber"]![
+                                                        "controller"]!
+                                                    .text,
+                                          },
+                                          onSuccess: () {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                  "Berhasil memperbarui profil",
+                                                ),
+                                              ),
+                                            );
+                                            setState(
+                                              () => isUpdateProcess = false,
+                                            );
+                                          },
+                                          onError: () {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                  "Terjadi kesalahan, gagal memperbarui profil",
+                                                ),
+                                              ),
+                                            );
+                                            setState(
+                                              () => isUpdateProcess = false,
+                                            );
+                                          });
+                                    } else {
+                                      firestoreService.updateUserPengurus(
+                                          id: widget.user["id"] ?? "",
+                                          data: {
+                                            "name": controllers["name"]![
+                                                    "controller"]!
+                                                .text,
+                                            "position": controllers[
+                                                    "position"]!["controller"]!
+                                                .text,
+                                          },
+                                          onSuccess: () {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                  "Berhasil memperbarui profil",
+                                                ),
+                                              ),
+                                            );
+                                            setState(
+                                              () => isUpdateProcess = false,
+                                            );
+                                          },
+                                          onError: () {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                  "Terjadi kesalahan, gagal memperbarui profil",
+                                                ),
+                                              ),
+                                            );
+                                            setState(
+                                              () => isUpdateProcess = false,
+                                            );
+                                          });
+                                    }
+                                  }
+                                },
                                 child: const Center(
                                   child: Text(
                                     "Simpan",
@@ -234,35 +332,45 @@ class _HomeProfileFragmentState extends State<HomeProfileFragment> {
                   const SizedBox(
                     height: 10,
                   ),
-                  widget.role != "pengurus"
-                      ? Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          color: const Color(0xff3FBDF1),
-                          elevation: 5,
-                          child: SizedBox(
-                            height: 50,
-                            child: InkWell(
-                              splashColor: Colors.white,
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        const ChangePassword()));
-                              },
-                              child: const Center(
-                                child: Text(
-                                  "Ubah Password",
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white),
-                                ),
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    color: const Color(0xff3FBDF1),
+                    elevation: 5,
+                    child: SizedBox(
+                      height: 50,
+                      child: InkWell(
+                        splashColor: Colors.white,
+                        onTap: () {
+                          if (widget.role == "pengurus") {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const ChangePin(),
                               ),
-                            ),
+                            );
+                          } else {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const ChangePassword(),
+                              ),
+                            );
+                          }
+                        },
+                        child: Center(
+                          child: Text(
+                            widget.role == "pengurus"
+                                ? "Ubah PIN"
+                                : "Ubah Password",
+                            style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white),
                           ),
-                        )
-                      : const SizedBox.shrink(),
+                        ),
+                      ),
+                    ),
+                  ),
                   const SizedBox(
                     height: 15,
                   ),

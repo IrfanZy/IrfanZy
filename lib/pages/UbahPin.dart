@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:quick_letter_1/widgets/TextFieldCustomProfile.dart';
 
-class ChangePassword extends StatefulWidget {
-  const ChangePassword({super.key});
+class ChangePin extends StatefulWidget {
+  const ChangePin({super.key});
 
   @override
-  State<ChangePassword> createState() => _ChangePasswordState();
+  State<ChangePin> createState() => _ChangePinState();
 }
 
-class _ChangePasswordState extends State<ChangePassword> {
-  final TextEditingController oldPasswordController = TextEditingController(),
-      newPasswordController = TextEditingController(),
-      newPasswordController2 = TextEditingController();
+class _ChangePinState extends State<ChangePin> {
+  final TextEditingController oldPinController = TextEditingController(),
+      newPinController = TextEditingController(),
+      newPinController2 = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     child: Column(
                       children: [
                         const Text(
-                          "Ubah Password Baru",
+                          "Ubah Pin Baru",
                           style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
@@ -52,7 +52,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                         ),
                         const SizedBox(height: 15),
                         const Text(
-                          "Kata sandi yang baru harus berbeda dengan kata sandi yang sebelumnya.",
+                          "PIN yang baru harus berbeda dengan kata sandi yang sebelumnya.",
                           style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w500,
@@ -61,18 +61,18 @@ class _ChangePasswordState extends State<ChangePassword> {
                         ),
                         const SizedBox(height: 20),
                         TextFieldCustomProfile(
-                          controller: oldPasswordController,
-                          hint: 'Password Lama',
+                          controller: oldPinController,
+                          hint: 'Pin Lama',
                         ),
                         const SizedBox(height: 20),
                         TextFieldCustomProfile(
-                          controller: newPasswordController,
-                          hint: 'Password Baru',
+                          controller: newPinController,
+                          hint: 'Pin Baru',
                         ),
                         const SizedBox(height: 20),
                         TextFieldCustomProfile(
-                          controller: newPasswordController2,
-                          hint: 'Konfirmasi Password',
+                          controller: newPinController2,
+                          hint: 'Konfirmasi Pin',
                         ),
                         const SizedBox(height: 20),
                         Card(
@@ -88,7 +88,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                               onTap: () {},
                               child: const Center(
                                 child: Text(
-                                  "Ganti Password",
+                                  "Ganti Pin",
                                   style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.w500,

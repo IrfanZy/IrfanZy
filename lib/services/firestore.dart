@@ -158,6 +158,32 @@ class FirestoreService {
     );
   }
 
+  void updateUserWarga({
+    required String id,
+    required Map<String, dynamic> data,
+    Function? onSuccess,
+    Function? onError,
+  }) {
+    takeAction(
+      future: doc("user_warga", id).update(data),
+      onError: onError,
+      onSuccess: onSuccess,
+    );
+  }
+
+  void updateUserPengurus({
+    required String id,
+    required Map<String, dynamic> data,
+    Function? onSuccess,
+    Function? onError,
+  }) {
+    takeAction(
+      future: doc("user_pengurus", id).update(data),
+      onError: onError,
+      onSuccess: onSuccess,
+    );
+  }
+
   void deleteDataWarga({
     required String id,
     Function? onSuccess,

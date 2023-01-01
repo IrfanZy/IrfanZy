@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
       if (userCredential.user != null) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text("Password yang dimasukkan salah"),
+            content: Text("Berhasil login akun"),
           ),
         );
         Hive.openBox('session').then(
