@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:quick_letter_1/fragments/AdminFragment.dart';
 import 'package:quick_letter_1/fragments/HomeBerandaFragment.dart';
 import 'package:quick_letter_1/fragments/HomeProfileFragment.dart';
+import 'package:quick_letter_1/models/UserAdmin.dart';
 import 'package:quick_letter_1/models/UserPengurus.dart';
 import 'package:quick_letter_1/models/UserWarga.dart';
 import 'package:quick_letter_1/services/Constant.dart';
@@ -27,7 +28,9 @@ class _BerandaState extends State<Beranda> {
   Widget build(BuildContext context) {
     Map<String, dynamic> user = widget.role == "pengurus"
         ? Provider.of<UserPengurus>(context).toJson()
-        : Provider.of<UserWarga>(context).toJson();
+        : widget.role == "admin"
+            ? Provider.of<UserAdmin>(context).toJson()
+            : Provider.of<UserWarga>(context).toJson();
 
     return Scaffold(
       body: Stack(

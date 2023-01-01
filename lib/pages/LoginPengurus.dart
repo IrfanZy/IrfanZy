@@ -207,27 +207,55 @@ class _KepengurusanState extends State<Kepengurusan> {
                                               builder: (context) =>
                                                   MultiProvider(
                                                 providers: [
-                                                  StreamProvider<
-                                                      UserPengurus>.value(
-                                                    value: firestoreService
-                                                        .userPengurus(
-                                                      listUserPengurus
-                                                          .firstWhere(
-                                                            (_) =>
-                                                                _.pin ==
-                                                                controller.text,
-                                                            orElse: () =>
-                                                                UserPengurus
-                                                                    .empty,
-                                                          )
-                                                          .id,
-                                                    ),
-                                                    initialData:
-                                                        UserPengurus.empty,
-                                                    catchError:
-                                                        (context, object) =>
-                                                            UserPengurus.empty,
-                                                  ),
+                                                  _.get('role') == "pengurus"
+                                                      ? StreamProvider<
+                                                          UserPengurus>.value(
+                                                          value:
+                                                              firestoreService
+                                                                  .userPengurus(
+                                                            listUserPengurus
+                                                                .firstWhere(
+                                                                  (_) =>
+                                                                      _.pin ==
+                                                                      controller
+                                                                          .text,
+                                                                  orElse: () =>
+                                                                      UserPengurus
+                                                                          .empty,
+                                                                )
+                                                                .id,
+                                                          ),
+                                                          initialData:
+                                                              UserPengurus
+                                                                  .empty,
+                                                          catchError: (context,
+                                                                  object) =>
+                                                              UserPengurus
+                                                                  .empty,
+                                                        )
+                                                      : StreamProvider<
+                                                          UserAdmin>.value(
+                                                          value:
+                                                              firestoreService
+                                                                  .userAdmin(
+                                                            listUserAdmin
+                                                                .firstWhere(
+                                                                  (_) =>
+                                                                      _.pin ==
+                                                                      controller
+                                                                          .text,
+                                                                  orElse: () =>
+                                                                      UserAdmin
+                                                                          .empty,
+                                                                )
+                                                                .id,
+                                                          ),
+                                                          initialData:
+                                                              UserAdmin.empty,
+                                                          catchError: (context,
+                                                                  object) =>
+                                                              UserAdmin.empty,
+                                                        ),
                                                 ],
                                                 child: Beranda(
                                                   role: listUserPengurus.any(

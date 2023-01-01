@@ -71,12 +71,6 @@ class FirestoreService {
               )
           : const Stream.empty();
 
-  Stream<UserWarga> userWarga(String id) => docStream<UserWarga>(
-        path: "user_warga",
-        docId: id,
-        fetch: UserWarga.fetch,
-      );
-
   Stream<List<UserWarga>> listUserWarga() => collectionStream<UserWarga>(
         path: "user_warga",
         fetch: UserWarga.fetch,
@@ -91,6 +85,18 @@ class FirestoreService {
       collectionStream<UserPengurus>(
         path: "user_pengurus",
         fetch: UserPengurus.fetch,
+      );
+
+  Stream<UserWarga> userWarga(String id) => docStream<UserWarga>(
+        path: "user_warga",
+        docId: id,
+        fetch: UserWarga.fetch,
+      );
+
+  Stream<UserAdmin> userAdmin(String id) => docStream<UserAdmin>(
+        path: "user_admin",
+        docId: id,
+        fetch: UserAdmin.fetch,
       );
 
   Stream<UserPengurus> userPengurus(String id) => docStream<UserPengurus>(

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import "package:permission_handler/permission_handler.dart";
 import 'package:provider/provider.dart';
+import 'package:quick_letter_1/models/UserAdmin.dart';
 import 'package:quick_letter_1/models/UserPengurus.dart';
 import 'package:quick_letter_1/models/UserWarga.dart';
 import "package:quick_letter_1/pages/Home.dart";
@@ -63,7 +64,6 @@ class App extends StatelessWidget {
                           );
 
                         case "pengurus":
-                        case "admin":
                           return MultiProvider(
                             providers: [
                               StreamProvider<UserPengurus>.value(
@@ -73,6 +73,23 @@ class App extends StatelessWidget {
                                 initialData: UserPengurus.empty,
                                 catchError: (context, object) =>
                                     UserPengurus.empty,
+                              ),
+                            ],
+                            child: Beranda(
+                              role: __.data!.get("role").toString(),
+                            ),
+                          );
+
+                        case "admin":
+                          return MultiProvider(
+                            providers: [
+                              StreamProvider<UserAdmin>.value(
+                                value: firestoreService.userAdmin(
+                                  __.data!.get("id").toString(),
+                                ),
+                                initialData: UserAdmin.empty,
+                                catchError: (context, object) =>
+                                    UserAdmin.empty,
                               ),
                             ],
                             child: Beranda(
