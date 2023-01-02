@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,6 +12,7 @@ import 'package:quick_letter_1/models/UserWarga.dart';
 import 'package:quick_letter_1/pages/Login.dart';
 import 'package:quick_letter_1/pages/UbahPassword.dart';
 import 'package:quick_letter_1/pages/UbahPin.dart';
+import 'package:quick_letter_1/services/Constant.dart';
 import 'package:quick_letter_1/services/Firestore.dart';
 import 'package:quick_letter_1/widgets/TextFieldCustomProfile.dart';
 
@@ -80,6 +82,109 @@ class _HomeProfileFragmentState extends State<HomeProfileFragment> {
     }
   }
 
+  updateProfileInfo() {
+    if (!isUpdateProcess &&
+        controllers.keys.every((_) =>
+            (controllers[_]!["controller"] as TextEditingController)
+                .text
+                .isNotEmpty) &&
+        (controllers.keys.any((_) =>
+                (controllers[_]!["controller"] as TextEditingController).text !=
+                widget.user[_]) ||
+            imageFile != null)) {
+      setState(() => isUpdateProcess = true);
+
+      if (imageFile != null) {
+        firestoreService.updateProfilePhoto(
+          id: (widget.user["id"] ?? "").toString(),
+          collection: "user-${widget.role}",
+          file: imageFile!,
+          onError: () {
+            setState(() => imageFile = null);
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                  "Terjadi kesalahan saat mengupload foto",
+                ),
+              ),
+            );
+          },
+        );
+      }
+
+      if (widget.role == "warga") {
+        firestoreService.updateUserWarga(
+            id: widget.user["id"] ?? "",
+            data: {
+              "name": controllers["name"]!["controller"]!.text,
+              "address": controllers["address"]!["controller"]!.text,
+              "phoneNumber": controllers["phoneNumber"]!["controller"]!.text,
+            },
+            onSuccess: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text(
+                    "Berhasil memperbarui profil",
+                  ),
+                ),
+              );
+              setState(
+                () {
+                  isUpdateProcess = false;
+                  readOnly = true;
+                },
+              );
+            },
+            onError: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text(
+                    "Terjadi kesalahan, gagal memperbarui profil",
+                  ),
+                ),
+              );
+              setState(
+                () => isUpdateProcess = false,
+              );
+            });
+      } else {
+        firestoreService.updateUserPengurus(
+            id: widget.user["id"] ?? "",
+            data: {
+              "name": controllers["name"]!["controller"]!.text,
+              "position": controllers["position"]!["controller"]!.text,
+            },
+            onSuccess: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text(
+                    "Berhasil memperbarui profil",
+                  ),
+                ),
+              );
+              setState(
+                () {
+                  isUpdateProcess = false;
+                  readOnly = true;
+                },
+              );
+            },
+            onError: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text(
+                    "Terjadi kesalahan, gagal memperbarui profil",
+                  ),
+                ),
+              );
+              setState(
+                () => isUpdateProcess = false,
+              );
+            });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (controllers.isEmpty) {
@@ -119,6 +224,19 @@ class _HomeProfileFragmentState extends State<HomeProfileFragment> {
           },
         });
       }
+    }
+
+    if (imageFile == null) {
+      imageWidget = getNetworkImage(
+        url: (widget.user["photoUrl"] ?? "").toString(),
+        progressIndicatorSize: 20,
+        emptyWidget: const Icon(
+          Icons.person_rounded,
+          size: 70,
+          color: Colors.white,
+          key: ValueKey<bool>(false),
+        ),
+      );
     }
 
     return GestureDetector(
@@ -177,17 +295,14 @@ class _HomeProfileFragmentState extends State<HomeProfileFragment> {
                           child: Container(
                             width: 110,
                             height: 110,
+                            clipBehavior: Clip.hardEdge,
                             decoration: const BoxDecoration(
                               color: Colors.grey,
                               borderRadius: BorderRadius.all(
                                 Radius.circular(1000),
                               ),
                             ),
-                            child: const Icon(
-                              Icons.person,
-                              color: Colors.white,
-                              size: 70,
-                            ),
+                            child: imageWidget,
                           ),
                         ),
                         Align(
@@ -270,101 +385,7 @@ class _HomeProfileFragmentState extends State<HomeProfileFragment> {
                               height: 50,
                               child: InkWell(
                                 splashColor: Colors.white,
-                                onTap: () {
-                                  if (!isUpdateProcess &&
-                                      controllers.keys.every((_) =>
-                                          (controllers[_]!["controller"]
-                                                  as TextEditingController)
-                                              .text
-                                              .isNotEmpty)) {
-                                    setState(() => isUpdateProcess = true);
-                                    if (widget.role == "warga") {
-                                      firestoreService.updateUserWarga(
-                                          id: widget.user["id"] ?? "",
-                                          data: {
-                                            "name": controllers["name"]![
-                                                    "controller"]!
-                                                .text,
-                                            "address": controllers["address"]![
-                                                    "controller"]!
-                                                .text,
-                                            "phoneNumber":
-                                                controllers["phoneNumber"]![
-                                                        "controller"]!
-                                                    .text,
-                                          },
-                                          onSuccess: () {
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              const SnackBar(
-                                                content: Text(
-                                                  "Berhasil memperbarui profil",
-                                                ),
-                                              ),
-                                            );
-                                            setState(
-                                              () {
-                                                isUpdateProcess = false;
-                                                readOnly = true;
-                                              },
-                                            );
-                                          },
-                                          onError: () {
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              const SnackBar(
-                                                content: Text(
-                                                  "Terjadi kesalahan, gagal memperbarui profil",
-                                                ),
-                                              ),
-                                            );
-                                            setState(
-                                              () => isUpdateProcess = false,
-                                            );
-                                          });
-                                    } else {
-                                      firestoreService.updateUserPengurus(
-                                          id: widget.user["id"] ?? "",
-                                          data: {
-                                            "name": controllers["name"]![
-                                                    "controller"]!
-                                                .text,
-                                            "position": controllers[
-                                                    "position"]!["controller"]!
-                                                .text,
-                                          },
-                                          onSuccess: () {
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              const SnackBar(
-                                                content: Text(
-                                                  "Berhasil memperbarui profil",
-                                                ),
-                                              ),
-                                            );
-                                            setState(
-                                              () {
-                                                isUpdateProcess = false;
-                                                readOnly = true;
-                                              },
-                                            );
-                                          },
-                                          onError: () {
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              const SnackBar(
-                                                content: Text(
-                                                  "Terjadi kesalahan, gagal memperbarui profil",
-                                                ),
-                                              ),
-                                            );
-                                            setState(
-                                              () => isUpdateProcess = false,
-                                            );
-                                          });
-                                    }
-                                  }
-                                },
+                                onTap: updateProfileInfo,
                                 child: const Center(
                                   child: Text(
                                     "Simpan",

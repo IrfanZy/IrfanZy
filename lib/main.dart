@@ -1,5 +1,6 @@
 import "package:firebase_core/firebase_core.dart";
 import 'package:flutter/services.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import "package:permission_handler/permission_handler.dart";
 import 'package:provider/provider.dart';
@@ -18,6 +19,7 @@ Future<void> main() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await Hive.initFlutter();
+  await DefaultCacheManager().emptyCache();
   await [
     Permission.storage,
   ].request();

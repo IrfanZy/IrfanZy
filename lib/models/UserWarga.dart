@@ -1,5 +1,5 @@
 class UserWarga {
-  final String id, name, nik, email, address, phoneNumber;
+  final String id, name, nik, email, address, phoneNumber, photoUrl;
 
   UserWarga({
     required this.id,
@@ -8,6 +8,7 @@ class UserWarga {
     required this.email,
     required this.address,
     required this.phoneNumber,
+    required this.photoUrl,
   });
 
   static createNew({
@@ -23,6 +24,7 @@ class UserWarga {
         "email": email,
         "address": address,
         "phoneNumber": phoneNumber,
+        "photoUrl": "",
       });
 
   static get empty => UserWarga(
@@ -32,6 +34,7 @@ class UserWarga {
         email: "",
         address: "",
         phoneNumber: "",
+        photoUrl: "",
       );
 
   static UserWarga fetch(Function getSnapshot) => UserWarga(
@@ -41,6 +44,7 @@ class UserWarga {
         email: getSnapshot("email", "").toString(),
         address: getSnapshot("address", "").toString(),
         phoneNumber: getSnapshot("phoneNumber", "").toString(),
+        photoUrl: getSnapshot("photoUrl", "").toString(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -50,6 +54,7 @@ class UserWarga {
         "email": email,
         "address": address,
         "phoneNumber": phoneNumber,
+        "photoUrl": photoUrl,
       };
 
   @override
@@ -60,7 +65,8 @@ class UserWarga {
       other.nik == nik &&
       other.email == email &&
       other.address == address &&
-      other.phoneNumber == phoneNumber;
+      other.phoneNumber == phoneNumber &&
+      other.photoUrl == photoUrl;
 
   @override
   int get hashCode => Object.hash(
@@ -70,5 +76,6 @@ class UserWarga {
         email.hashCode,
         address.hashCode,
         phoneNumber.hashCode,
+        photoUrl.hashCode,
       );
 }

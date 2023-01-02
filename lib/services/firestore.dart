@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:quick_letter_1/models/DataWarga.dart';
 import 'package:quick_letter_1/models/UserAdmin.dart';
 import 'package:quick_letter_1/models/UserPengurus.dart';
@@ -182,6 +185,30 @@ class FirestoreService {
       onError: onError,
       onSuccess: onSuccess,
     );
+  }
+
+  void updateProfilePhoto({
+    required String collection,
+    required String id,
+    required File file,
+    required Function onError,
+    Function? onSuccess,
+  }) async {
+    try {
+      TaskSnapshot uploadTask = await FirebaseStorage.instance
+          .ref("/profile-$collection/$id")
+          .putFile(file);
+
+      takeAction(
+        future: doc(collection.replaceAll("-", "_"), id).update(
+          {"photoUrl": await uploadTask.ref.getDownloadURL()},
+        ),
+        onError: onError,
+        onSuccess: onSuccess,
+      );
+    } on FirebaseException catch (_) {
+      onError();
+    }
   }
 
   void deleteDataWarga({

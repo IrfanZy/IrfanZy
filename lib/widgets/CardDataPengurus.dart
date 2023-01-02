@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quick_letter_1/models/UserPengurus.dart';
+import 'package:quick_letter_1/services/Constant.dart';
 import 'package:quick_letter_1/services/Firestore.dart';
 
 class CardDataPengurus extends StatelessWidget {
@@ -26,16 +27,33 @@ class CardDataPengurus extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(
-                width: 30,
-                height: 30,
-                child: CircleAvatar(
-                  backgroundColor: Colors.black45,
-                  child: Center(
-                    child: Icon(
-                      Icons.person_rounded,
-                      size: 20,
-                      color: Colors.white,
+              SizedBox(
+                width: 35,
+                height: 35,
+                child: Container(
+                  clipBehavior: Clip.hardEdge,
+                  decoration: BoxDecoration(
+                    color: Colors.black45,
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(10000),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        offset: Offset.zero,
+                        color: Colors.grey.withOpacity(0.2),
+                        blurRadius: 3,
+                      )
+                    ],
+                  ),
+                  child: getNetworkImage(
+                    url: userPengurus.photoUrl,
+                    progressIndicatorSize: 20,
+                    emptyWidget: const Center(
+                      child: Icon(
+                        Icons.person_rounded,
+                        size: 20,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),

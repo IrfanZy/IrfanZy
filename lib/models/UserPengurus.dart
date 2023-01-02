@@ -1,11 +1,12 @@
 class UserPengurus {
-  final String id, pin, name, position;
+  final String id, pin, name, position, photoUrl;
 
   UserPengurus({
     required this.id,
     required this.pin,
     required this.name,
     required this.position,
+    required this.photoUrl,
   });
 
   static createNew({
@@ -17,6 +18,7 @@ class UserPengurus {
         "pin": pin,
         "name": name,
         "position": position,
+        "photoUrl": "",
       });
 
   static get empty => UserPengurus(
@@ -24,6 +26,7 @@ class UserPengurus {
         pin: "",
         name: "",
         position: "",
+        photoUrl: "",
       );
 
   static UserPengurus fetch(Function getSnapshot) => UserPengurus(
@@ -31,6 +34,7 @@ class UserPengurus {
         pin: getSnapshot("pin", "").toString(),
         name: getSnapshot("name", "").toString(),
         position: getSnapshot("position", "").toString(),
+        photoUrl: getSnapshot("photoUrl", "").toString(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -38,6 +42,7 @@ class UserPengurus {
         "pin": pin,
         "name": name,
         "position": position,
+        "photoUrl": photoUrl,
       };
 
   @override
@@ -46,7 +51,8 @@ class UserPengurus {
       other.id == id &&
       other.pin == pin &&
       other.name == name &&
-      other.position == position;
+      other.position == position &&
+      other.photoUrl == photoUrl;
 
   @override
   int get hashCode => Object.hash(
@@ -54,5 +60,6 @@ class UserPengurus {
         pin.hashCode,
         name.hashCode,
         position.hashCode,
+        photoUrl.hashCode,
       );
 }

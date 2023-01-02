@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_letter_1/models/DataWarga.dart';
 import 'package:quick_letter_1/pages/FormSurat.dart';
@@ -42,6 +46,54 @@ class Features {
       ),
     ),
   ];
+}
+
+Widget getNetworkImage({
+  required String url,
+  required double progressIndicatorSize,
+  required Widget emptyWidget,
+}) {
+  Widget imageWidget;
+
+  try {
+    print(url);
+    imageWidget = url.isNotEmpty
+        ? FutureBuilder<File>(
+            future: DefaultCacheManager().getSingleFile(
+              url,
+            ),
+            builder: (context, snapshot) {
+              return snapshot.hasData
+                  ? Image.file(
+                      File(snapshot.data!.path),
+                      fit: BoxFit.cover,
+                    )
+                  : CachedNetworkImage(
+                      imageUrl: url,
+                      imageBuilder: (context, imageProvider) => Image(
+                        image: imageProvider,
+                        alignment: Alignment.center,
+                        fit: BoxFit.cover,
+                      ),
+                      progressIndicatorBuilder:
+                          (context, url, downloadProgress) => Center(
+                        child: SizedBox(
+                          width: progressIndicatorSize,
+                          height: progressIndicatorSize,
+                          child: CircularProgressIndicator(
+                              value: downloadProgress.progress),
+                        ),
+                      ),
+                      errorWidget: (context, url, error) => emptyWidget,
+                    );
+            },
+          )
+        : emptyWidget;
+  } catch (e) {
+    imageWidget = emptyWidget;
+  }
+
+  return imageWidget;
 }
 
 const templatePdfLetter = """
