@@ -214,7 +214,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             TextField(
                               controller: passwordController,
-                              obscureText: false,
+                              obscureText: true,
                               decoration: const InputDecoration(
                                   border: OutlineInputBorder(
                                     borderSide: BorderSide(
