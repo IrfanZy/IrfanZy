@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_letter_1/models/UserPengurus.dart';
 import 'package:quick_letter_1/models/UserWarga.dart';
@@ -31,6 +35,50 @@ class _HomeProfileFragmentState extends State<HomeProfileFragment> {
       Map<String, Map<String, dynamic>>.from({});
 
   bool readOnly = true, isLogoutProcess = false, isUpdateProcess = false;
+  dynamic imageWidget;
+  File? imageFile;
+
+  void pickImageFromGallery() async {
+    try {
+      XFile? xFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+      CroppedFile? croppedFile = xFile != null
+          ? await ImageCropper().cropImage(
+              sourcePath: xFile.path,
+              aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+              uiSettings: [
+                AndroidUiSettings(
+                  toolbarTitle: 'Potong Gambar',
+                  toolbarColor: const Color(0xFF404040),
+                  toolbarWidgetColor: Colors.white,
+                  initAspectRatio: CropAspectRatioPreset.square,
+                  lockAspectRatio: true,
+                ),
+                IOSUiSettings(
+                  title: 'Potong Gambar',
+                ),
+              ],
+            )
+          : null;
+
+      File? file = croppedFile != null ? File(croppedFile.path) : null;
+
+      if (file != null) {
+        setState(() {
+          imageWidget = Image.file(file);
+          imageFile = file;
+        });
+      }
+    } catch (err) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            "Terjadi kesalahan, silahkan coba kembali",
+          ),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -151,9 +199,7 @@ class _HomeProfileFragmentState extends State<HomeProfileFragment> {
                                 ScaleTransition(scale: animation, child: child),
                             child: !readOnly
                                 ? GestureDetector(
-                                    onTap: () {
-                                      //
-                                    },
+                                    onTap: pickImageFromGallery,
                                     child: Container(
                                       key: const ValueKey<bool>(true),
                                       width: 35,

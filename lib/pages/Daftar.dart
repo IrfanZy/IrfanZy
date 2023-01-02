@@ -54,7 +54,7 @@ class _DaftarPageState extends State<DaftarPage> {
             (value) async {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text("Terjadi kesalahan, silahkan coba kembali"),
+                  content: Text("Berhasil melakukan pendaftaran akun"),
                 ),
               );
               nameController.clear();
