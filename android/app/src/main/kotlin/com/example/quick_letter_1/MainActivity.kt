@@ -1,4 +1,4 @@
-package com.example.quick_letter_1
+package com.project.quick_letter
 
 import io.flutter.embedding.android.FlutterActivity
 
