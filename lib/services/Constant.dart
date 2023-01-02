@@ -56,7 +56,6 @@ Widget getNetworkImage({
   Widget imageWidget;
 
   try {
-    print(url);
     imageWidget = url.isNotEmpty
         ? FutureBuilder<File>(
             future: DefaultCacheManager().getSingleFile(
