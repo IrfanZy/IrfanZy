@@ -57,7 +57,7 @@ class _BerandaState extends State<Beranda> {
                             : "Kelola Data Warga",
                         description: widget.role == "warga"
                             ? "Warga dapat dengan mudah mencetak surat pengantar RT dengan menekan tombol dibawah ini"
-                            : "Pengurus RT dan admin dapat mengkelola dan mengubah data setiap warga per-blok yang sudah tercantum di dalam form nya.",
+                            : "Pengurus RT dan admin dapat mengkelola dan mengubah data setiap warga RT 07 per-bloknya yang sudah tercantum di dalam form tambah data warga .",
                         features: widget.role == "warga"
                             ? Features.Warga
                             : Features.Pengurus,
