@@ -33,6 +33,7 @@ class _ManageDataWargaState extends State<ManageDataWarga> {
     "gender": TextEditingController(),
     "religion": TextEditingController(),
     "placeAndDateOfBirth": TextEditingController(),
+    "address": TextEditingController(),
   };
 
   void closeDialog() {
@@ -98,6 +99,9 @@ class _ManageDataWargaState extends State<ManageDataWarga> {
       controllers["placeAndDateOfBirth"]!.selection =
           TextSelection.fromPosition(TextPosition(
               offset: controllers["placeAndDateOfBirth"]!.text.length));
+      controllers["address"]!.text = dataSelected!.address;
+      controllers["address"]!.selection = TextSelection.fromPosition(
+          TextPosition(offset: controllers["address"]!.text.length));
     }
 
     return Scaffold(
@@ -218,6 +222,12 @@ class _ManageDataWargaState extends State<ManageDataWarga> {
                   hint: "Tempat Tanggal Lahir",
                 ),
                 const SizedBox(height: 20),
+                TextFieldCustom(
+                  controller: controllers["address"]!,
+                  readOnly: readOnlyDialog,
+                  hint: "Alamat",
+                ),
+                const SizedBox(height: 20),
                 statusDialogPopupData == "add"
                     ? ElevatedButton(
                         onPressed: () {
@@ -245,6 +255,7 @@ class _ManageDataWargaState extends State<ManageDataWarga> {
                                     placeAndDateOfBirth:
                                         controllers["placeAndDateOfBirth"]!
                                             .text,
+                                    address: controllers["address"]!.text,
                                   ),
                                   onSuccess: () {
                                     setState(

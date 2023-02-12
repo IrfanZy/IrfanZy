@@ -79,42 +79,49 @@ class DialogAction extends StatelessWidget {
                                   ),
                                   child: SingleChildScrollView(
                                     padding: EdgeInsets.only(
-                                      top: getSize(180),
+                                      top: getSize(50),
                                       left: getSize(75),
                                       right: getSize(75),
                                       bottom: getSize(75),
                                     ),
-                                    child: child,
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              width: getSize(100),
+                                              height: getSize(100),
+                                            ),
+                                            Expanded(
+                                              child: Text(
+                                                title,
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 18),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: getSize(100),
+                                              height: getSize(100),
+                                              child: IconButton(
+                                                onPressed: closeAction,
+                                                padding:
+                                                    const EdgeInsets.all(0),
+                                                splashRadius: 1,
+                                                icon: const Icon(
+                                                    Icons.close_rounded),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        const SizedBox(height: 30),
+                                        child,
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              right: 0,
-                              left: 0,
-                              top: 0,
-                              child: Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: Text(
-                                  title,
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18),
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              right: 12,
-                              top: 12,
-                              child: SizedBox(
-                                width: getSize(100),
-                                height: getSize(100),
-                                child: IconButton(
-                                  onPressed: closeAction,
-                                  padding: const EdgeInsets.all(0),
-                                  splashRadius: 1,
-                                  icon: const Icon(Icons.close_rounded),
                                 ),
                               ),
                             ),
